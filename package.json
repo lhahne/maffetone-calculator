@@ -1,0 +1,18 @@
+{
+  "name": "maffetone-calculator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bunx tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js --outdir dist --watch",
+    "build": "bunx tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js --outdir dist --minify && bun run build.mjs",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.6.1",
+    "bun-types": "^1.1.26",
+    "happy-dom": "^14.12.3",
+    "tailwindcss": "^3.4.10"
+  }
+}
