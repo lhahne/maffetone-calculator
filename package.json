@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bunx tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js --outdir dist --watch",
+    "dev": "bun --watch build.mjs & bunx tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js --outdir dist --watch & bunx live-server dist",
     "build": "bunx tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js --outdir dist --minify && bun run build.mjs",
     "test": "bun test"
   },
