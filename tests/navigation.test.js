@@ -28,7 +28,7 @@ describe("Navigation", () => {
     initNav();
     const menu = document.getElementById("nav-menu");
     expect(menu).toBeTruthy();
-    expect(menu.classList.contains("translate-x-full")).toBe(true);
+    expect(menu.classList.contains("-translate-x-full")).toBe(true);
   });
 
   it("should toggle menu when button is clicked", () => {
@@ -37,18 +37,18 @@ describe("Navigation", () => {
     const menu = document.getElementById("nav-menu");
 
     // Initially closed
-    expect(menu.classList.contains("translate-x-full")).toBe(true);
+    expect(menu.classList.contains("-translate-x-full")).toBe(true);
     expect(menu.classList.contains("translate-x-0")).toBe(false);
 
     // Click to open
     btn.click();
-    expect(menu.classList.contains("translate-x-full")).toBe(false);
+    expect(menu.classList.contains("-translate-x-full")).toBe(false);
     expect(menu.classList.contains("translate-x-0")).toBe(true);
     expect(document.body.style.overflow).toBe("hidden");
 
     // Click to close
     btn.click();
-    expect(menu.classList.contains("translate-x-full")).toBe(true);
+    expect(menu.classList.contains("-translate-x-full")).toBe(true);
     expect(menu.classList.contains("translate-x-0")).toBe(false);
     expect(document.body.style.overflow).toBe("");
   });
@@ -65,7 +65,7 @@ describe("Navigation", () => {
 
     // Click link
     link.click();
-    expect(menu.classList.contains("translate-x-full")).toBe(true);
+    expect(menu.classList.contains("-translate-x-full")).toBe(true);
     expect(menu.classList.contains("translate-x-0")).toBe(false);
   });
 });
