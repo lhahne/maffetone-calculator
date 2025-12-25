@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --watch build.mjs & bunx tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js --outdir dist --watch & bunx live-server dist",
-    "build": "bunx tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js --outdir dist --minify && bun run build.mjs",
+    "dev": "bun --watch build.mjs & bunx tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js src/pace-main.js --outdir dist --watch & bunx live-server dist",
+    "build": "bunx tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js src/pace-main.js --outdir dist --minify && bun run build.mjs",
     "preview": "bunx wrangler pages dev dist",
     "deploy": "bun run build && bunx wrangler pages deploy dist",
     "test": "bun test"
