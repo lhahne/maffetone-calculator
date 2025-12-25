@@ -2,8 +2,11 @@ import { beforeEach, describe, expect, it } from "bun:test";
 import { Window } from "happy-dom";
 
 describe("calculator UI", () => {
+  let moduleVersion = 0;
+
   const loadMain = async () => {
-    await import(`../src/main.js?cache-bust=${Date.now()}`);
+    moduleVersion += 1;
+    await import(`../src/main.js?cache-bust=${moduleVersion}`);
   };
 
   beforeEach(() => {
