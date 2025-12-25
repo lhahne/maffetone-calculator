@@ -9,8 +9,8 @@ export function initNav() {
       </svg>
     </button>
 
-    <div id="nav-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-sm transition-transform duration-300 transform -translate-x-full flex items-center justify-center">
-        <nav class="flex flex-col gap-8 text-center">
+    <div id="nav-menu" class="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-sm transition-transform duration-300 transform -translate-x-full flex items-center justify-center md:justify-start md:pl-24">
+        <nav class="flex flex-col gap-8 text-center md:text-left">
             <a href="/" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Maffetone Calculator</a>
             <a href="/pace.html" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Pace Calculator</a>
         </nav>
