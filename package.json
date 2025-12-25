@@ -15,7 +15,6 @@
     "@testing-library/user-event": "^14.6.1",
     "bun-types": "^1.1.26",
     "happy-dom": "^14.12.3",
-    "tailwindcss": "^3.4.10",
-    "wrangler": "^3.70.0"
+    "tailwindcss": "^3.4.10"
   }
 }
