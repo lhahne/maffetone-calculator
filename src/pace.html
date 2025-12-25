@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pace Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="absolute inset-0 -z-10">
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.25),_transparent_45%)]"
+      ></div>
+      <div
+        class="absolute bottom-0 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-sky-500/20 blur-[120px]"
+      ></div>
+    </div>
+
+    <main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-10 px-6 py-14">
+      <header class="space-y-4 text-center">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">
+          Running Tools
+        </p>
+        <h1 class="text-4xl font-semibold leading-tight text-white md:text-5xl">
+          Pace Calculator
+        </h1>
+        <p class="text-lg text-slate-300">
+          Convert your running pace between minutes per mile and minutes per kilometer.
+        </p>
+      </header>
+
+      <form
+        id="pace-form"
+        class="w-full space-y-8 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-glow backdrop-blur"
+      >
+        <div class="grid gap-8 sm:grid-cols-2">
+          <!-- Miles per Minute -->
+          <div class="space-y-3">
+            <label class="text-lg font-semibold text-white block text-center">
+              Pace (min/mile)
+            </label>
+            <div class="flex items-center justify-center gap-2">
+              <input
+                id="mile-min"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                placeholder="0"
+                class="w-20 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-center text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
+              />
+              <span class="text-2xl text-slate-400">:</span>
+              <input
+                id="mile-sec"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                max="59"
+                placeholder="00"
+                class="w-20 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-center text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
+              />
+            </div>
+          </div>
+
+          <!-- Km per Minute -->
+          <div class="space-y-3">
+            <label class="text-lg font-semibold text-white block text-center">
+              Pace (min/km)
+            </label>
+            <div class="flex items-center justify-center gap-2">
+              <input
+                id="km-min"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                placeholder="0"
+                class="w-20 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-center text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
+              />
+              <span class="text-2xl text-slate-400">:</span>
+              <input
+                id="km-sec"
+                type="number"
+                inputmode="numeric"
+                min="0"
+                max="59"
+                placeholder="00"
+                class="w-20 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-center text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <script type="module" src="./pace-main.js"></script>
+  </body>
+</html>
