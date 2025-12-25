@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --watch build.mjs & bunx tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js src/pace-main.js --outdir dist --watch & bunx live-server dist",
-    "build": "bunx tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js src/pace-main.js --outdir dist --minify && bun run build.mjs",
-    "preview": "bunx wrangler pages dev dist",
-    "deploy": "bun run build && bunx wrangler pages deploy dist",
+    "dev": "bun --watch build.mjs & bun tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js src/pace-main.js --outdir dist --watch & bun live-server dist",
+    "build": "bun tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js src/pace-main.js --outdir dist --minify && bun run build.mjs",
+    "preview": "bun wrangler pages dev dist",
+    "deploy": "bun run build && bun wrangler pages deploy dist",
     "test": "bun test"
   },
   "devDependencies": {
@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^14.6.1",
     "bun-types": "^1.1.26",
     "happy-dom": "^14.12.3",
+    "live-server": "^1.2.2",
     "tailwindcss": "^3.4.10"
   }
 }

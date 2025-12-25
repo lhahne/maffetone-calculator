@@ -3,6 +3,9 @@ import {
   calculateMaffetoneRange,
   formatRange,
 } from "./calculator.js";
+import { initNav } from "./nav.js";
+
+initNav();
 
 const ageInput = document.querySelector("#age");
 const form = document.querySelector("#calculator-form");

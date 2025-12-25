@@ -1,4 +1,7 @@
 import { convertPaceToKm, convertPaceToMiles } from "./pace-calculator.js";
+import { initNav } from "./nav.js";
+
+initNav();
 
 const mileMinInput = document.getElementById("mile-min");
 const mileSecInput = document.getElementById("mile-sec");
