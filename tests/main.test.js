@@ -2,6 +2,10 @@ import { beforeEach, describe, expect, it } from "bun:test";
 import { Window } from "happy-dom";
 
 describe("calculator UI", () => {
+  const loadMain = async () => {
+    await import(`../src/main.js?cache-bust=${Date.now()}`);
+  };
+
   beforeEach(() => {
     const window = new Window();
     globalThis.window = window;
@@ -25,7 +29,7 @@ describe("calculator UI", () => {
   });
 
   it("updates the result when valid inputs are provided", async () => {
-    await import("../src/main.js");
+    await loadMain();
 
     const ageInput = document.querySelector("#age");
     ageInput.value = "32";
@@ -43,7 +47,7 @@ describe("calculator UI", () => {
   });
 
   it("hides the result and shows a note for invalid ages", async () => {
-    await import("../src/main.js");
+    await loadMain();
 
     const ageInput = document.querySelector("#age");
     ageInput.value = "";
@@ -59,7 +63,7 @@ describe("calculator UI", () => {
   });
 
   it("updates the adjustment note when the selection changes", async () => {
-    await import("../src/main.js");
+    await loadMain();
 
     const ageInput = document.querySelector("#age");
     ageInput.value = "40";
