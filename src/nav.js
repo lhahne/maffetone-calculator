@@ -13,6 +13,7 @@ export function initNav() {
         <nav class="flex flex-col gap-8 text-center md:text-left">
             <a href="/" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Maffetone Calculator</a>
             <a href="/pace.html" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Pace Calculator</a>
+            <a href="/riegel.html" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Race Pace Estimator</a>
         </nav>
     </div>
   `;
@@ -27,17 +28,17 @@ export function initNav() {
   function toggleMenu() {
     const isClosed = menu.classList.contains('-translate-x-full');
     if (isClosed) {
-        menu.classList.remove('-translate-x-full');
-        menu.classList.add('translate-x-0');
-        hamburgerIcon.classList.add('hidden');
-        closeIcon.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+      menu.classList.remove('-translate-x-full');
+      menu.classList.add('translate-x-0');
+      hamburgerIcon.classList.add('hidden');
+      closeIcon.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
     } else {
-        menu.classList.add('-translate-x-full');
-        menu.classList.remove('translate-x-0');
-        hamburgerIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
-        document.body.style.overflow = ''; // Restore scrolling
+      menu.classList.add('-translate-x-full');
+      menu.classList.remove('translate-x-0');
+      hamburgerIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+      document.body.style.overflow = ''; // Restore scrolling
     }
   }
 
@@ -45,8 +46,8 @@ export function initNav() {
 
   // Close menu when clicking a link
   menu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-          toggleMenu();
-      });
+    link.addEventListener('click', () => {
+      toggleMenu();
+    });
   });
 }
