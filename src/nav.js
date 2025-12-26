@@ -14,6 +14,7 @@ export function initNav() {
             <a href="/" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Maffetone Calculator</a>
             <a href="/pace.html" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Pace Calculator</a>
             <a href="/riegel.html" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Race Pace Estimator</a>
+            <a href="/magic-mile.html" class="text-3xl font-semibold text-white hover:text-sky-400 transition">Magic Mile Calculator</a>
         </nav>
     </div>
   `;

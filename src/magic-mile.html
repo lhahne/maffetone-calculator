@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magic Mile Calculator | Jeff Galloway's Race Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="absolute inset-0 -z-10">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(168,85,247,0.25),_transparent_45%)]"></div>
+        <div class="absolute bottom-0 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-purple-500/20 blur-[120px]">
+        </div>
+    </div>
+
+    <main class="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 pb-14 pt-24">
+        <header class="space-y-4">
+            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-purple-300">
+                Jeff Galloway's Method
+            </p>
+            <h1 class="text-4xl font-semibold leading-tight text-white md:text-5xl">
+                Magic Mile Race Predictor
+            </h1>
+            <p class="max-w-2xl text-lg text-slate-300">
+                Enter your Magic Mile time (a hard but sustainable 1-mile effort) to predict your race paces
+                for 5K through marathon distances.
+            </p>
+        </header>
+
+        <section class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <div class="space-y-8">
+                <!-- Magic Mile Input -->
+                <div class="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-glow backdrop-blur space-y-6">
+                    <h2 class="text-xl font-semibold text-white">Your Magic Mile Time</h2>
+                    <p class="text-sm text-slate-400">
+                        Run 1 mile at a hard, sustainable pace — not an all-out sprint.
+                    </p>
+
+                    <div class="space-y-3">
+                        <label class="text-sm font-medium text-slate-400 uppercase tracking-wider">Time
+                            (MM:SS)</label>
+                        <div class="flex items-center gap-2">
+                            <input id="input-m" type="number" value="7" min="0" max="59"
+                                class="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-4 text-center text-2xl text-white outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50" />
+                            <span class="text-2xl text-slate-500">:</span>
+                            <input id="input-s" type="number" value="00" min="0" max="59"
+                                class="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-4 text-center text-2xl text-white outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50" />
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button
+                            class="preset-btn px-3 py-1 text-xs rounded-full border border-white/10 bg-white/5 hover:bg-white/10"
+                            data-m="6" data-s="00">6:00</button>
+                        <button
+                            class="preset-btn px-3 py-1 text-xs rounded-full border border-white/10 bg-white/5 hover:bg-white/10"
+                            data-m="7" data-s="00">7:00</button>
+                        <button
+                            class="preset-btn px-3 py-1 text-xs rounded-full border border-white/10 bg-white/5 hover:bg-white/10"
+                            data-m="8" data-s="00">8:00</button>
+                        <button
+                            class="preset-btn px-3 py-1 text-xs rounded-full border border-white/10 bg-white/5 hover:bg-white/10"
+                            data-m="9" data-s="00">9:00</button>
+                        <button
+                            class="preset-btn px-3 py-1 text-xs rounded-full border border-white/10 bg-white/5 hover:bg-white/10"
+                            data-m="10" data-s="00">10:00</button>
+                    </div>
+                </div>
+
+                <!-- Pro Tips -->
+                <div class="rounded-3xl border border-white/10 bg-slate-900/60 p-6">
+                    <h2 class="text-lg font-semibold text-white">How to Run Your Magic Mile</h2>
+                    <ul class="mt-3 text-sm text-slate-300 leading-relaxed space-y-2">
+                        <li>• Warm up with a slow 1-mile jog</li>
+                        <li>• Do a few short accelerations</li>
+                        <li>• Run hard but don't sprint — you should feel like you couldn't run more than 100m further
+                        </li>
+                        <li>• Keep your pace even throughout</li>
+                        <li>• Re-test every 2 weeks during training</li>
+                    </ul>
+                </div>
+            </div>
+
+            <aside class="space-y-6">
+                <div
+                    class="rounded-3xl border border-white/10 bg-white/10 p-8 shadow-xl backdrop-blur ring-1 ring-purple-400/30">
+                    <p class="text-sm uppercase tracking-[0.3em] text-purple-300">Race Predictions</p>
+
+                    <div class="mt-6 space-y-4">
+                        <!-- 5K -->
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <div>
+                                <span class="text-lg font-semibold text-white">5K</span>
+                                <span class="text-sm text-slate-400 ml-2">(3.1 mi)</span>
+                            </div>
+                            <div class="text-right">
+                                <div id="result-5k-time" class="text-2xl font-bold text-white">--:--</div>
+                                <div id="result-5k-pace" class="text-sm text-purple-300">--:-- /mi</div>
+                            </div>
+                        </div>
+
+                        <!-- 10K -->
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <div>
+                                <span class="text-lg font-semibold text-white">10K</span>
+                                <span class="text-sm text-slate-400 ml-2">(6.2 mi)</span>
+                            </div>
+                            <div class="text-right">
+                                <div id="result-10k-time" class="text-2xl font-bold text-white">--:--</div>
+                                <div id="result-10k-pace" class="text-sm text-purple-300">--:-- /mi</div>
+                            </div>
+                        </div>
+
+                        <!-- 10 Mile -->
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <div>
+                                <span class="text-lg font-semibold text-white">10 Mile</span>
+                            </div>
+                            <div class="text-right">
+                                <div id="result-10mile-time" class="text-2xl font-bold text-white">--:--:--</div>
+                                <div id="result-10mile-pace" class="text-sm text-purple-300">--:-- /mi</div>
+                            </div>
+                        </div>
+
+                        <!-- Half Marathon -->
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <div>
+                                <span class="text-lg font-semibold text-white">Half Marathon</span>
+                                <span class="text-sm text-slate-400 ml-2">(13.1 mi)</span>
+                            </div>
+                            <div class="text-right">
+                                <div id="result-half-time" class="text-2xl font-bold text-white">--:--:--</div>
+                                <div id="result-half-pace" class="text-sm text-purple-300">--:-- /mi</div>
+                            </div>
+                        </div>
+
+                        <!-- Marathon -->
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-lg font-semibold text-white">Marathon</span>
+                                <span class="text-sm text-slate-400 ml-2">(26.2 mi)</span>
+                            </div>
+                            <div class="text-right">
+                                <div id="result-marathon-time" class="text-2xl font-bold text-white">--:--:--</div>
+                                <div id="result-marathon-pace" class="text-sm text-purple-300">--:-- /mi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl border border-white/10 bg-slate-900/60 p-6">
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        <strong class="text-white">Note:</strong> These predictions assume you've trained properly for
+                        the distance, pace yourself correctly, and race in conditions of 60°F (15°C) or cooler.
+                    </p>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script type="module" src="./magic-mile-main.js"></script>
+</body>
+
+</html>
