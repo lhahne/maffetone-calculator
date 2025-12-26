@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --watch build.mjs & bun tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js src/pace-main.js src/riegel-main.js --outdir dist --watch & bun live-server dist",
-    "build": "bun tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js src/pace-main.js src/riegel-main.js --outdir dist --minify && bun run build.mjs",
+    "dev": "bun --watch build.mjs & bun tailwindcss -i src/styles.css -o dist/styles.css --watch & bun build src/main.js src/pace-main.js src/riegel-main.js src/magic-mile-main.js --outdir dist --watch & bun live-server dist",
+    "build": "bun tailwindcss -i src/styles.css -o dist/styles.css && bun build src/main.js src/pace-main.js src/riegel-main.js src/magic-mile-main.js --outdir dist --minify && bun run build.mjs",
     "preview": "bun wrangler pages dev dist",
     "deploy": "bun run build && bun wrangler pages deploy dist",
     "test": "bun test"
