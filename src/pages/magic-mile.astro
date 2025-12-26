@@ -1,24 +1,8 @@
-<!doctype html>
-<html lang="en">
+---
+import Layout from '../layouts/Layout.astro';
+---
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Magic Mile Calculator | Jeff Galloway's Race Predictor</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-</head>
-
-<body class="min-h-screen bg-slate-950 text-slate-100">
-    <div class="absolute inset-0 -z-10">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(168,85,247,0.25),_transparent_45%)]"></div>
-        <div class="absolute bottom-0 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-purple-500/20 blur-[120px]">
-        </div>
-    </div>
-
+<Layout title="Magic Mile Calculator | Jeff Galloway's Race Predictor">
     <main class="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 pb-14 pt-24">
         <header class="space-y-4">
             <p class="text-sm font-semibold uppercase tracking-[0.3em] text-purple-300">
@@ -164,7 +148,90 @@
         </section>
     </main>
 
-    <script type="module" src="./magic-mile-main.js"></script>
-</body>
+    <script>
+        import { calculateMagicMilePredictions, secondsToMMSS, secondsToHHMMSS, msToSeconds } from '../scripts/magic-mile-calculator.js';
 
-</html>
+        function setupMagicMileCalculator() {
+            const inputM = document.getElementById('input-m') as HTMLInputElement;
+            const inputS = document.getElementById('input-s') as HTMLInputElement;
+
+            if (!inputM || !inputS) return;
+
+            // Result elements
+            const result5kTime = document.getElementById('result-5k-time');
+            const result5kPace = document.getElementById('result-5k-pace');
+            const result10kTime = document.getElementById('result-10k-time');
+            const result10kPace = document.getElementById('result-10k-pace');
+            const result10mileTime = document.getElementById('result-10mile-time');
+            const result10milePace = document.getElementById('result-10mile-pace');
+            const resultHalfTime = document.getElementById('result-half-time');
+            const resultHalfPace = document.getElementById('result-half-pace');
+            const resultMarathonTime = document.getElementById('result-marathon-time');
+            const resultMarathonPace = document.getElementById('result-marathon-pace');
+
+            function updatePredictions() {
+                const magicMileSeconds = msToSeconds(inputM!.value, inputS!.value);
+
+                if (magicMileSeconds > 0) {
+                    const predictions = calculateMagicMilePredictions(magicMileSeconds);
+
+                    if (!predictions) return;
+
+                    // 5K
+                    result5kTime!.textContent = secondsToHHMMSS(predictions['5k'].totalTime);
+                    result5kPace!.textContent = `${secondsToMMSS(predictions['5k'].pacePerMile)} /mi`;
+
+                    // 10K
+                    result10kTime!.textContent = secondsToHHMMSS(predictions['10k'].totalTime);
+                    result10kPace!.textContent = `${secondsToMMSS(predictions['10k'].pacePerMile)} /mi`;
+
+                    // 10 Mile
+                    result10mileTime!.textContent = secondsToHHMMSS(predictions['10mile'].totalTime);
+                    result10milePace!.textContent = `${secondsToMMSS(predictions['10mile'].pacePerMile)} /mi`;
+
+                    // Half Marathon
+                    resultHalfTime!.textContent = secondsToHHMMSS(predictions['halfMarathon'].totalTime);
+                    resultHalfPace!.textContent = `${secondsToMMSS(predictions['halfMarathon'].pacePerMile)} /mi`;
+
+                    // Marathon
+                    resultMarathonTime!.textContent = secondsToHHMMSS(predictions['marathon'].totalTime);
+                    resultMarathonPace!.textContent = `${secondsToMMSS(predictions['marathon'].pacePerMile)} /mi`;
+                } else {
+                    // Reset all results
+                    result5kTime!.textContent = "--:--";
+                    result5kPace!.textContent = "--:-- /mi";
+                    result10kTime!.textContent = "--:--";
+                    result10kPace!.textContent = "--:-- /mi";
+                    result10mileTime!.textContent = "--:--:--";
+                    result10milePace!.textContent = "--:-- /mi";
+                    resultHalfTime!.textContent = "--:--:--";
+                    resultHalfPace!.textContent = "--:-- /mi";
+                    resultMarathonTime!.textContent = "--:--:--";
+                    resultMarathonPace!.textContent = "--:-- /mi";
+                }
+            }
+
+            [inputM, inputS].forEach(el => {
+                el.addEventListener('input', updatePredictions);
+            });
+
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const b = btn as HTMLButtonElement;
+                    inputM.value = b.dataset.m!;
+                    inputS.value = b.dataset.s!;
+                    updatePredictions();
+                });
+            });
+
+            // Initial calculation
+            updatePredictions();
+        }
+
+        // Run on first load
+        setupMagicMileCalculator();
+
+        // Run on view transitions
+        document.addEventListener('astro:after-swap', setupMagicMileCalculator);
+    </script>
+</Layout>

@@ -4,7 +4,7 @@ import {
     secondsToHHMMSS,
     hmsToSeconds,
     calculatePace,
-} from "../src/riegel-calculator.js";
+} from "../src/scripts/riegel-calculator.js";
 
 describe("Riegel Calculator Logic", () => {
     it("calculates predicted time correctly (5k to 10k)", () => {

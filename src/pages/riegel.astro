@@ -1,24 +1,8 @@
-<!doctype html>
-<html lang="en">
+---
+import Layout from '../layouts/Layout.astro';
+---
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Race Pace Estimator (Riegel's Formula)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-</head>
-
-<body class="min-h-screen bg-slate-950 text-slate-100">
-    <div class="absolute inset-0 -z-10">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.25),_transparent_45%)]"></div>
-        <div class="absolute bottom-0 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-sky-500/20 blur-[120px]">
-        </div>
-    </div>
-
+<Layout title="Race Pace Estimator (Riegel's Formula)">
     <main class="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 pb-14 pt-24">
         <header class="space-y-4">
             <p class="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">
@@ -128,7 +112,61 @@
         </section>
     </main>
 
-    <script type="module" src="./riegel-main.js"></script>
-</body>
+    <script>
+        import { calculateRiegelTime, secondsToHHMMSS, hmsToSeconds, calculatePace } from '../scripts/riegel-calculator.js';
 
-</html>
+        function setupRiegelCalculator() {
+            const inputDist = document.getElementById('input-distance') as HTMLInputElement;
+            const inputH = document.getElementById('input-h') as HTMLInputElement;
+            const inputM = document.getElementById('input-m') as HTMLInputElement;
+            const inputS = document.getElementById('input-s') as HTMLInputElement;
+            const targetDist = document.getElementById('target-distance') as HTMLInputElement;
+            const resultTime = document.getElementById('result-time');
+            const resultPace = document.getElementById('result-pace');
+
+            if (!inputDist || !inputH || !inputM || !inputS || !targetDist || !resultTime || !resultPace) return;
+
+            function updatePrediction() {
+                const d1 = parseFloat(inputDist.value);
+                const d2 = parseFloat(targetDist.value);
+                const t1 = hmsToSeconds(inputH.value, inputM.value, inputS.value);
+
+                if (d1 > 0 && d2 > 0 && t1 > 0) {
+                    const t2 = calculateRiegelTime(d1, t1, d2);
+                    resultTime!.textContent = secondsToHHMMSS(t2);
+                    resultPace!.textContent = `${calculatePace(t2, d2)} min/km`;
+                } else {
+                    resultTime!.textContent = "--:--:--";
+                    resultPace!.textContent = "--:-- min/km";
+                }
+            }
+
+            [inputDist, inputH, inputM, inputS, targetDist].forEach(el => {
+                el.addEventListener('input', updatePrediction);
+            });
+
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    inputDist.value = (btn as HTMLButtonElement).dataset.value!;
+                    updatePrediction();
+                });
+            });
+
+            document.querySelectorAll('.target-preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    targetDist.value = (btn as HTMLButtonElement).dataset.value!;
+                    updatePrediction();
+                });
+            });
+
+            // Initial calculation
+            updatePrediction();
+        }
+
+        // Run on first load
+        setupRiegelCalculator();
+
+        // Run on view transitions
+        document.addEventListener('astro:after-swap', setupRiegelCalculator);
+    </script>
+</Layout>

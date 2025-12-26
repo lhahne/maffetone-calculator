@@ -1,4 +1,4 @@
-import { convertPaceToKm, convertPaceToMiles } from "../src/pace-calculator.js";
+import { convertPaceToKm, convertPaceToMiles } from "../src/scripts/pace-calculator.js";
 
 // Helper function to assert equality
 function assertEqual(actual, expected, message) {

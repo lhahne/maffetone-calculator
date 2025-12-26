@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { Window } from "happy-dom";
+import { setupMaffetoneCalculator } from "../src/scripts/maffetone-ui.js";
 
 describe("calculator UI", () => {
   it("updates the result when valid inputs are provided", async () => {
@@ -14,19 +15,21 @@ describe("calculator UI", () => {
           <input type="radio" name="adjustment" value="0" checked />
         </label>
       </form>
-      <div id="result" class="hidden"></div>
-      <div id="result-range"></div>
-      <div id="result-base"></div>
+      <div id="result" class="hidden">
+        <div id="result-range"></div>
+        <div id="result-base"></div>
+      </div>
       <div id="result-note"></div>
     `;
 
-    await import("../src/main.js");
+    setupMaffetoneCalculator();
 
     const ageInput = document.querySelector("#age");
     ageInput.value = "32";
-    document
-      .querySelector("#calculator-form")
-      .dispatchEvent(new window.Event("input", { bubbles: true }));
+
+    // Trigger input event
+    const inputEvent = new window.Event("input", { bubbles: true });
+    document.querySelector("#calculator-form").dispatchEvent(inputEvent);
 
     const result = document.querySelector("#result");
     const resultRange = document.querySelector("#result-range");
