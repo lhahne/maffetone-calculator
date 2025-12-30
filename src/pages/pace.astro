@@ -1,9 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Pace Calculator">
-  <main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-10 px-6 pb-14 pt-24">
+  <main
+    class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-10 px-6 pb-14 pt-24"
+  >
     <header class="space-y-4 text-center">
       <p class="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">
         Running Tools
@@ -12,7 +14,8 @@ import Layout from '../layouts/Layout.astro';
         Pace Calculator
       </h1>
       <p class="text-lg text-slate-300">
-        Convert your running pace between minutes per mile and minutes per kilometer.
+        Convert your running pace between minutes per mile and minutes per
+        kilometer.
       </p>
     </header>
 
@@ -79,64 +82,12 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script>
-    import { convertPaceToKm, convertPaceToMiles } from "../scripts/pace-calculator.js";
-
-    function setupPaceCalculator() {
-      const mileMinInput = document.getElementById("mile-min") as HTMLInputElement;
-      const mileSecInput = document.getElementById("mile-sec") as HTMLInputElement;
-      const kmMinInput = document.getElementById("km-min") as HTMLInputElement;
-      const kmSecInput = document.getElementById("km-sec") as HTMLInputElement;
-      const form = document.getElementById("pace-form");
-
-      if (!mileMinInput || !mileSecInput || !kmMinInput || !kmSecInput || !form) return;
-
-      form.addEventListener("submit", (e) => e.preventDefault());
-
-      let isUpdating = false;
-
-      function updateKm() {
-        if (isUpdating) return;
-        isUpdating = true;
-
-        const min = mileMinInput.value;
-        const sec = mileSecInput.value;
-
-        const result = convertPaceToKm(min, sec);
-
-        kmMinInput.value = result.minutes.toString();
-        kmSecInput.value = result.seconds < 10 ? "0" + result.seconds : result.seconds.toString();
-
-        isUpdating = false;
-      }
-
-      function updateMiles() {
-        if (isUpdating) return;
-        isUpdating = true;
-
-        const min = kmMinInput.value;
-        const sec = kmSecInput.value;
-
-        const result = convertPaceToMiles(min, sec);
-
-        mileMinInput.value = result.minutes.toString();
-        mileSecInput.value = result.seconds < 10 ? "0" + result.seconds : result.seconds.toString();
-
-        isUpdating = false;
-      }
-
-      [mileMinInput, mileSecInput].forEach(input => {
-        input.addEventListener("input", updateKm);
-      });
-
-      [kmMinInput, kmSecInput].forEach(input => {
-        input.addEventListener("input", updateMiles);
-      });
-    }
+    import { setupPaceCalculator } from "../scripts/pace-ui";
 
     // Run on first load
     setupPaceCalculator();
 
     // Run on view transitions
-    document.addEventListener('astro:after-swap', setupPaceCalculator);
+    document.addEventListener("astro:after-swap", () => setupPaceCalculator());
   </script>
 </Layout>

@@ -1,9 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Karvonen Heart Rate Calculator">
-  <main class="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 pb-14 pt-24">
+  <main
+    class="mx-auto flex min-h-screen max-w-5xl flex-col gap-10 px-6 pb-14 pt-24"
+  >
     <header class="space-y-4">
       <p class="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">
         Karvonen Formula
@@ -12,9 +14,9 @@ import Layout from '../layouts/Layout.astro';
         Calculate your heart rate training zones.
       </h1>
       <p class="max-w-2xl text-lg text-slate-300">
-        The Karvonen formula uses your heart rate reserve (the difference between
-        max and resting HR) to calculate personalized training zones for different
-        intensity levels.
+        The Karvonen formula uses your heart rate reserve (the difference
+        between max and resting HR) to calculate personalized training zones for
+        different intensity levels.
       </p>
     </header>
 
@@ -39,7 +41,9 @@ import Layout from '../layouts/Layout.astro';
               class="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
               required
             />
-            <span class="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm uppercase tracking-[0.2em] text-slate-400">
+            <span
+              class="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm uppercase tracking-[0.2em] text-slate-400"
+            >
               years
             </span>
           </div>
@@ -61,14 +65,18 @@ import Layout from '../layouts/Layout.astro';
               class="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
               required
             />
-            <span class="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm uppercase tracking-[0.2em] text-slate-400">
+            <span
+              class="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm uppercase tracking-[0.2em] text-slate-400"
+            >
               bpm
             </span>
           </div>
         </div>
 
         <div class="space-y-3">
-          <label class="flex cursor-pointer items-center gap-4 rounded-2xl border border-white/10 bg-slate-900/50 p-4 transition hover:border-sky-400/70">
+          <label
+            class="flex cursor-pointer items-center gap-4 rounded-2xl border border-white/10 bg-slate-900/50 p-4 transition hover:border-sky-400/70"
+          >
             <input
               type="checkbox"
               id="use-custom-max"
@@ -91,7 +99,9 @@ import Layout from '../layouts/Layout.astro';
                 placeholder="e.g. 185"
                 class="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-lg text-white shadow-inner outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/50"
               />
-              <span class="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm uppercase tracking-[0.2em] text-slate-400">
+              <span
+                class="rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm uppercase tracking-[0.2em] text-slate-400"
+              >
                 bpm
               </span>
             </div>
@@ -115,10 +125,16 @@ import Layout from '../layouts/Layout.astro';
               <!-- Zones will be populated by JS -->
             </div>
           </div>
-          <div id="max-hr-display" class="mt-6 hidden border-t border-white/10 pt-4">
+          <div
+            id="max-hr-display"
+            class="mt-6 hidden border-t border-white/10 pt-4"
+          >
             <p class="text-sm text-slate-300">
-              Max HR: <span id="max-hr-value" class="font-semibold text-white">--</span> bpm
-              <span id="max-hr-source" class="text-slate-400">(calculated)</span>
+              Max HR: <span id="max-hr-value" class="font-semibold text-white"
+                >--</span
+              > bpm
+              <span id="max-hr-source" class="text-slate-400">(calculated)</span
+              >
             </p>
           </div>
         </div>
@@ -126,15 +142,9 @@ import Layout from '../layouts/Layout.astro';
         <div class="rounded-3xl border border-white/10 bg-slate-900/60 p-6">
           <h2 class="text-lg font-semibold text-white">How to use it</h2>
           <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-300">
-            <li>
-              Measure your resting heart rate first thing in the morning.
-            </li>
-            <li>
-              Train in Zone 2 (Endurance) for base building.
-            </li>
-            <li>
-              Use Zone 4 (Threshold) for interval training.
-            </li>
+            <li>Measure your resting heart rate first thing in the morning.</li>
+            <li>Train in Zone 2 (Endurance) for base building.</li>
+            <li>Use Zone 4 (Threshold) for interval training.</li>
           </ul>
         </div>
 
@@ -144,8 +154,9 @@ import Layout from '../layouts/Layout.astro';
             Target HR = ((Max HR - Resting HR) × Intensity%) + Resting HR
           </p>
           <p class="mt-2 text-sm text-slate-400">
-            This formula accounts for your fitness level by using heart rate reserve,
-            making the zones more accurate than simple percentage-of-max calculations.
+            This formula accounts for your fitness level by using heart rate
+            reserve, making the zones more accurate than simple
+            percentage-of-max calculations.
           </p>
         </div>
       </aside>
@@ -153,95 +164,14 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script>
-    import { calculateMaxHR, calculateAllZones } from "../scripts/karvonen-calculator.js";
-
-    function setupKarvonenCalculator(container = document) {
-      const form = container.querySelector("#karvonen-form");
-      const ageInput = container.querySelector("#age");
-      const restingHrInput = container.querySelector("#resting-hr");
-      const useCustomMaxCheckbox = container.querySelector("#use-custom-max");
-      const customMaxContainer = container.querySelector("#custom-max-container");
-      const maxHrInput = container.querySelector("#max-hr");
-      const resultsPlaceholder = container.querySelector("#results-placeholder");
-      const zonesContainer = container.querySelector("#zones-container");
-      const maxHrDisplay = container.querySelector("#max-hr-display");
-      const maxHrValue = container.querySelector("#max-hr-value");
-      const maxHrSource = container.querySelector("#max-hr-source");
-
-      if (!form) return;
-
-      function updateResults() {
-        const age = parseInt(ageInput.value, 10);
-        const restingHr = parseInt(restingHrInput.value, 10);
-        const useCustomMax = useCustomMaxCheckbox.checked;
-        const customMaxHr = parseInt(maxHrInput.value, 10);
-
-        // Determine max HR
-        let maxHr;
-        let source;
-        if (useCustomMax && Number.isFinite(customMaxHr) && customMaxHr > 0) {
-          maxHr = customMaxHr;
-          source = "(custom)";
-        } else if (Number.isFinite(age) && age > 0) {
-          maxHr = calculateMaxHR(age);
-          source = "(220 - age)";
-        } else {
-          maxHr = null;
-          source = "";
-        }
-
-        // Calculate zones
-        if (maxHr && Number.isFinite(restingHr) && restingHr > 0) {
-          const zones = calculateAllZones(maxHr, restingHr);
-
-          if (zones) {
-            resultsPlaceholder.classList.add("hidden");
-            zonesContainer.classList.remove("hidden");
-            maxHrDisplay.classList.remove("hidden");
-
-            zonesContainer.innerHTML = zones.map(zone => `
-              <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-900/50 p-4">
-                <div>
-                  <span class="font-semibold text-white">${zone.name}</span>
-                  <span class="text-slate-400"> · ${zone.label}</span>
-                </div>
-                <span class="text-lg font-semibold text-sky-300">${zone.hrMin}-${zone.hrMax} bpm</span>
-              </div>
-            `).join("");
-
-            maxHrValue.textContent = maxHr;
-            maxHrSource.textContent = source;
-          }
-        } else {
-          resultsPlaceholder.classList.remove("hidden");
-          zonesContainer.classList.add("hidden");
-          maxHrDisplay.classList.add("hidden");
-        }
-      }
-
-      function toggleCustomMax() {
-        if (useCustomMaxCheckbox.checked) {
-          customMaxContainer.classList.remove("hidden");
-        } else {
-          customMaxContainer.classList.add("hidden");
-        }
-        updateResults();
-      }
-
-      // Event listeners
-      ageInput.addEventListener("input", updateResults);
-      restingHrInput.addEventListener("input", updateResults);
-      useCustomMaxCheckbox.addEventListener("change", toggleCustomMax);
-      maxHrInput.addEventListener("input", updateResults);
-
-      // Initial state
-      updateResults();
-    }
+    import { setupKarvonenCalculator } from "../scripts/karvonen-ui";
 
     // Run on first load
     setupKarvonenCalculator();
 
     // Run on view transitions
-    document.addEventListener('astro:after-swap', () => setupKarvonenCalculator());
+    document.addEventListener("astro:after-swap", () =>
+      setupKarvonenCalculator(),
+    );
   </script>
 </Layout>

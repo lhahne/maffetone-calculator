@@ -1,12 +1,14 @@
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it, beforeEach } from "bun:test";
+import { Window } from "happy-dom";
 import {
   calculateMaxHR,
   calculateKarvonenHR,
   calculateAllZones,
   zones,
 } from "../src/scripts/karvonen-calculator";
+import { setupKarvonenCalculator } from "../src/scripts/karvonen-ui";
 
-describe("karvonen calculator", () => {
+describe("karvonen calculator logic", () => {
   describe("calculateMaxHR", () => {
     it("calculates max HR using 220 - age", () => {
       expect(calculateMaxHR(40)).toBe(180);
@@ -96,5 +98,76 @@ describe("karvonen calculator", () => {
       expect(zones[4].min).toBe(0.90);
       expect(zones[4].max).toBe(1.00);
     });
+  });
+});
+
+describe("karvonen calculator UI", () => {
+  let window: Window;
+
+  beforeEach(() => {
+    window = new Window();
+    globalThis.window = window as any;
+    globalThis.document = window.document as any;
+
+    document.body.innerHTML = `
+      <form id="karvonen-form">
+        <input id="age" name="age" />
+        <input id="resting-hr" name="resting-hr" />
+        <input type="checkbox" id="use-custom-max" name="use-custom-max" />
+        <div id="custom-max-container" class="hidden">
+            <input id="max-hr" name="max-hr" />
+        </div>
+      </form>
+      <div id="results-card">
+        <div id="results-placeholder"></div>
+        <div id="zones-container" class="hidden"></div>
+      </div>
+      <div id="max-hr-display" class="hidden">
+        <span id="max-hr-value"></span>
+        <span id="max-hr-source"></span>
+      </div>
+    `;
+  });
+
+  it("calculates zones when age and resting HR are entered", () => {
+    setupKarvonenCalculator();
+
+    const ageInput = document.querySelector("#age") as HTMLInputElement;
+    const restingHrInput = document.querySelector("#resting-hr") as HTMLInputElement;
+
+    ageInput.value = "30";
+    restingHrInput.value = "60";
+
+    ageInput.dispatchEvent(new window.Event("input", { bubbles: true }) as any);
+
+    const zonesContainer = document.querySelector("#zones-container") as HTMLElement;
+    const maxHrValue = document.querySelector("#max-hr-value") as HTMLElement;
+
+    expect(zonesContainer.classList.contains("hidden")).toBe(false);
+    expect(maxHrValue.textContent).toBe("190");
+    expect(zonesContainer.innerHTML).toContain("Zone 1");
+  });
+
+  it("uses custom max HR when enabled", () => {
+    setupKarvonenCalculator();
+
+    const ageInput = document.querySelector("#age") as HTMLInputElement;
+    const restingHrInput = document.querySelector("#resting-hr") as HTMLInputElement;
+    const useCustomMax = document.querySelector("#use-custom-max") as HTMLInputElement;
+    const maxHrInput = document.querySelector("#max-hr") as HTMLInputElement;
+
+    ageInput.value = "30";
+    restingHrInput.value = "60";
+    useCustomMax.checked = true;
+    maxHrInput.value = "200";
+
+    useCustomMax.dispatchEvent(new window.Event("change", { bubbles: true }) as any);
+    maxHrInput.dispatchEvent(new window.Event("input", { bubbles: true }) as any);
+
+    const maxHrValue = document.querySelector("#max-hr-value") as HTMLElement;
+    const maxHrSource = document.querySelector("#max-hr-source") as HTMLElement;
+
+    expect(maxHrValue.textContent).toBe("200");
+    expect(maxHrSource.textContent).toBe("(custom)");
   });
 });
