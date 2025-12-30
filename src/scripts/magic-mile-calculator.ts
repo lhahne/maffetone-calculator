@@ -2,27 +2,32 @@
  * Jeff Galloway's Magic Mile Calculator
  * 
  * Based on the Magic Mile, a one-mile time trial used to predict race paces.
- * 
- * Formulas (per mile pace):
- * - 5K: Magic Mile + 33 seconds
- * - 10K: Magic Mile × 1.15
- * - 10 Mile: Magic Mile × 1.175
- * - Half Marathon: Magic Mile × 1.2
- * - Marathon: Magic Mile × 1.3
  */
+
+export interface Prediction {
+    pacePerMile: number;
+    distance: number;
+    label: string;
+    totalTime?: number;
+    pacePerKm?: number;
+}
+
+export interface PredictionMap {
+    [key: string]: Prediction;
+}
 
 /**
  * Calculates predicted race paces based on Magic Mile time
  * @param {number} magicMileSeconds - Magic Mile time in seconds
- * @returns {object} Object containing predicted paces and times for each distance
+ * @returns {PredictionMap | null} Object containing predicted paces and times for each distance
  */
-export function calculateMagicMilePredictions(magicMileSeconds) {
+export function calculateMagicMilePredictions(magicMileSeconds: number): PredictionMap | null {
     if (!magicMileSeconds || magicMileSeconds <= 0) {
         return null;
     }
 
     // Distances in miles
-    const distances = {
+    const distances: { [key: string]: number } = {
         '5k': 3.10686,
         '10k': 6.21371,
         '10mile': 10,
@@ -31,7 +36,7 @@ export function calculateMagicMilePredictions(magicMileSeconds) {
     };
 
     // Per-mile pace multipliers/additions
-    const predictions = {
+    const predictions: PredictionMap = {
         '5k': {
             pacePerMile: magicMileSeconds + 33,
             distance: distances['5k'],
@@ -71,10 +76,8 @@ export function calculateMagicMilePredictions(magicMileSeconds) {
 
 /**
  * Converts seconds to MM:SS format (for pace)
- * @param {number} totalSeconds 
- * @returns {string}
  */
-export function secondsToMMSS(totalSeconds) {
+export function secondsToMMSS(totalSeconds: number | null): string {
     if (totalSeconds === null || isNaN(totalSeconds)) return "--:--";
 
     const m = Math.floor(totalSeconds / 60);
@@ -85,10 +88,8 @@ export function secondsToMMSS(totalSeconds) {
 
 /**
  * Converts seconds to HH:MM:SS format (for race times)
- * @param {number} totalSeconds 
- * @returns {string}
  */
-export function secondsToHHMMSS(totalSeconds) {
+export function secondsToHHMMSS(totalSeconds: number | null): string {
     if (totalSeconds === null || isNaN(totalSeconds)) return "--:--:--";
 
     const h = Math.floor(totalSeconds / 3600);
@@ -103,10 +104,7 @@ export function secondsToHHMMSS(totalSeconds) {
 
 /**
  * Converts MM, SS to total seconds
- * @param {number} m 
- * @param {number} s 
- * @returns {number}
  */
-export function msToSeconds(m, s) {
-    return (parseInt(m) || 0) * 60 + (parseInt(s) || 0);
+export function msToSeconds(m: string | number, s: string | number): number {
+    return (parseInt(m as string) || 0) * 60 + (parseInt(s as string) || 0);
 }

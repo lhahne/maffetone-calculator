@@ -1,4 +1,16 @@
-export const adjustmentOptions = [
+export interface AdjustmentOption {
+  id: string;
+  label: string;
+  adjustment: number;
+}
+
+export interface MaffetoneRange {
+  base: number;
+  low: number;
+  high: number;
+}
+
+export const adjustmentOptions: AdjustmentOption[] = [
   {
     id: "recovering",
     label: "Recovering from a major illness, injury, or on medication",
@@ -21,7 +33,7 @@ export const adjustmentOptions = [
   },
 ];
 
-export function calculateMaffetoneBase(age, adjustment) {
+export function calculateMaffetoneBase(age: number, adjustment: number): number | null {
   if (!Number.isFinite(age) || age <= 0) {
     return null;
   }
@@ -29,7 +41,7 @@ export function calculateMaffetoneBase(age, adjustment) {
   return 180 - age + adjustment;
 }
 
-export function calculateMaffetoneRange(age, adjustment) {
+export function calculateMaffetoneRange(age: number, adjustment: number): MaffetoneRange | null {
   const base = calculateMaffetoneBase(age, adjustment);
   if (base === null) {
     return null;
@@ -42,7 +54,7 @@ export function calculateMaffetoneRange(age, adjustment) {
   };
 }
 
-export function formatRange(range) {
+export function formatRange(range: MaffetoneRange | null): string | null {
   if (!range) {
     return null;
   }

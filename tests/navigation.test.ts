@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll } from "bun:test";
 import { Window } from "happy-dom";
-import { setupNav } from "../src/scripts/navigation-ui.js";
+import { setupNav } from "../src/scripts/navigation-ui";
 
 const navHTML = `
   <button id="nav-toggle">
@@ -17,8 +17,8 @@ const navHTML = `
 describe("Navigation", () => {
   beforeAll(() => {
     const window = new Window();
-    globalThis.window = window;
-    globalThis.document = window.document;
+    globalThis.window = window as any;
+    globalThis.document = window.document as any;
   });
 
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe("Navigation", () => {
     setupNav();
     const btn = document.getElementById("nav-toggle");
     expect(btn).toBeTruthy();
-    expect(btn.tagName).toBe("BUTTON");
+    expect(btn?.tagName).toBe("BUTTON");
   });
 
   it("should add nav menu to the DOM", () => {
@@ -42,14 +42,14 @@ describe("Navigation", () => {
     setupNav();
     const menu = document.getElementById("nav-menu");
     expect(menu).toBeTruthy();
-    expect(menu.classList.contains("-translate-x-full")).toBe(true);
+    expect(menu?.classList.contains("-translate-x-full")).toBe(true);
   });
 
   it("should toggle menu when button is clicked", () => {
     document.body.innerHTML = navHTML;
     setupNav();
-    const btn = document.getElementById("nav-toggle");
-    const menu = document.getElementById("nav-menu");
+    const btn = document.getElementById("nav-toggle") as HTMLElement;
+    const menu = document.getElementById("nav-menu") as HTMLElement;
 
     // Initially closed
     expect(menu.classList.contains("-translate-x-full")).toBe(true);
@@ -71,9 +71,9 @@ describe("Navigation", () => {
   it("should close menu when a link is clicked", () => {
     document.body.innerHTML = navHTML;
     setupNav();
-    const btn = document.getElementById("nav-toggle");
-    const menu = document.getElementById("nav-menu");
-    const link = menu.querySelector("a");
+    const btn = document.getElementById("nav-toggle") as HTMLElement;
+    const menu = document.getElementById("nav-menu") as HTMLElement;
+    const link = menu.querySelector("a") as HTMLElement;
 
     // Open menu
     btn.click();

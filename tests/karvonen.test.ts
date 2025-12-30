@@ -1,9 +1,10 @@
+import { describe, expect, it } from "bun:test";
 import {
   calculateMaxHR,
   calculateKarvonenHR,
   calculateAllZones,
   zones,
-} from "../src/scripts/karvonen-calculator.js";
+} from "../src/scripts/karvonen-calculator";
 
 describe("karvonen calculator", () => {
   describe("calculateMaxHR", () => {
@@ -42,28 +43,34 @@ describe("karvonen calculator", () => {
     it("returns all 5 zones with HR ranges", () => {
       const result = calculateAllZones(180, 60);
 
-      expect(result).toHaveLength(5);
-      expect(result[0].name).toBe("Zone 1");
-      expect(result[0].label).toBe("Recovery");
-      expect(result[4].name).toBe("Zone 5");
-      expect(result[4].label).toBe("VO2max");
+      expect(result).not.toBeNull();
+      if (result) {
+        expect(result).toHaveLength(5);
+        expect(result[0].name).toBe("Zone 1");
+        expect(result[0].label).toBe("Recovery");
+        expect(result[4].name).toBe("Zone 5");
+        expect(result[4].label).toBe("VO2max");
+      }
     });
 
     it("calculates correct HR ranges for each zone", () => {
       const result = calculateAllZones(180, 60);
       // HRR = 180 - 60 = 120
 
-      // Zone 1: 50-60% → (120 * 0.5) + 60 = 120, (120 * 0.6) + 60 = 132
-      expect(result[0].hrMin).toBe(120);
-      expect(result[0].hrMax).toBe(132);
+      expect(result).not.toBeNull();
+      if (result) {
+        // Zone 1: 50-60% → (120 * 0.5) + 60 = 120, (120 * 0.6) + 60 = 132
+        expect(result[0].hrMin).toBe(120);
+        expect(result[0].hrMax).toBe(132);
 
-      // Zone 3: 70-80% → (120 * 0.7) + 60 = 144, (120 * 0.8) + 60 = 156
-      expect(result[2].hrMin).toBe(144);
-      expect(result[2].hrMax).toBe(156);
+        // Zone 3: 70-80% → (120 * 0.7) + 60 = 144, (120 * 0.8) + 60 = 156
+        expect(result[2].hrMin).toBe(144);
+        expect(result[2].hrMax).toBe(156);
 
-      // Zone 5: 90-100% → (120 * 0.9) + 60 = 168, (120 * 1.0) + 60 = 180
-      expect(result[4].hrMin).toBe(168);
-      expect(result[4].hrMax).toBe(180);
+        // Zone 5: 90-100% → (120 * 0.9) + 60 = 168, (120 * 1.0) + 60 = 180
+        expect(result[4].hrMin).toBe(168);
+        expect(result[4].hrMax).toBe(180);
+      }
     });
 
     it("returns null for invalid inputs", () => {

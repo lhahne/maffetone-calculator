@@ -1,8 +1,9 @@
+import { describe, expect, it } from "bun:test";
 import {
   calculateMaffetoneBase,
   calculateMaffetoneRange,
   formatRange,
-} from "../src/scripts/calculator.js";
+} from "../src/scripts/calculator";
 
 describe("calculator helpers", () => {
   it("returns null for invalid ages", () => {

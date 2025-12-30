@@ -1,5 +1,17 @@
 // Zone definitions
-export const zones = [
+export interface Zone {
+  name: string;
+  label: string;
+  min: number;
+  max: number;
+}
+
+export interface ZoneResult extends Zone {
+  hrMin: number;
+  hrMax: number;
+}
+
+export const zones: Zone[] = [
   { name: "Zone 1", label: "Recovery", min: 0.50, max: 0.60 },
   { name: "Zone 2", label: "Endurance", min: 0.60, max: 0.70 },
   { name: "Zone 3", label: "Tempo", min: 0.70, max: 0.80 },
@@ -7,18 +19,18 @@ export const zones = [
   { name: "Zone 5", label: "VO2max", min: 0.90, max: 1.00 },
 ];
 
-export function calculateMaxHR(age) {
+export function calculateMaxHR(age: number): number | null {
   if (!Number.isFinite(age) || age <= 0) {
     return null;
   }
   return 220 - age;
 }
 
-export function calculateKarvonenHR(maxHR, restingHR, intensity) {
+export function calculateKarvonenHR(maxHR: number, restingHR: number, intensity: number): number {
   return Math.round(((maxHR - restingHR) * intensity) + restingHR);
 }
 
-export function calculateAllZones(maxHR, restingHR) {
+export function calculateAllZones(maxHR: number, restingHR: number): ZoneResult[] | null {
   if (!Number.isFinite(maxHR) || !Number.isFinite(restingHR)) {
     return null;
   }

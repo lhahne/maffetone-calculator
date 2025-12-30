@@ -1,12 +1,12 @@
 import { describe, expect, it } from "bun:test";
 import { Window } from "happy-dom";
-import { setupMaffetoneCalculator } from "../src/scripts/maffetone-ui.js";
+import { setupMaffetoneCalculator } from "../src/scripts/maffetone-ui";
 
 describe("calculator UI", () => {
   it("updates the result when valid inputs are provided", async () => {
     const window = new Window();
-    globalThis.window = window;
-    globalThis.document = window.document;
+    globalThis.window = window as any;
+    globalThis.document = window.document as any;
 
     document.body.innerHTML = `
       <form id="calculator-form">
@@ -24,16 +24,16 @@ describe("calculator UI", () => {
 
     setupMaffetoneCalculator();
 
-    const ageInput = document.querySelector("#age");
+    const ageInput = document.querySelector("#age") as HTMLInputElement;
     ageInput.value = "32";
 
     // Trigger input event
     const inputEvent = new window.Event("input", { bubbles: true });
-    document.querySelector("#calculator-form").dispatchEvent(inputEvent);
+    document.querySelector("#calculator-form")?.dispatchEvent(inputEvent as any);
 
-    const result = document.querySelector("#result");
-    const resultRange = document.querySelector("#result-range");
-    const resultBase = document.querySelector("#result-base");
+    const result = document.querySelector("#result") as HTMLElement;
+    const resultRange = document.querySelector("#result-range") as HTMLElement;
+    const resultBase = document.querySelector("#result-base") as HTMLElement;
 
     expect(result.classList.contains("hidden")).toBe(false);
     expect(resultRange.textContent).toBe("138-148 bpm");

@@ -1,12 +1,7 @@
 /**
  * Riegel's Formula: T2 = T1 * (D2 / D1)^1.06
- * 
- * @param {number} d1 - Recent race distance
- * @param {number} t1 - Recent race time in seconds
- * @param {number} d2 - Target race distance
- * @returns {number} Estimated race time in seconds
  */
-export function calculateRiegelTime(d1, t1, d2) {
+export function calculateRiegelTime(d1: number, t1: number, d2: number): number | null {
     if (!d1 || !t1 || !d2 || d1 <= 0 || t1 <= 0 || d2 <= 0) {
         return null;
     }
@@ -15,10 +10,8 @@ export function calculateRiegelTime(d1, t1, d2) {
 
 /**
  * Converts seconds to HH:MM:SS format
- * @param {number} totalSeconds 
- * @returns {string}
  */
-export function secondsToHHMMSS(totalSeconds) {
+export function secondsToHHMMSS(totalSeconds: number | null): string {
     if (totalSeconds === null || isNaN(totalSeconds)) return "--:--:--";
 
     const h = Math.floor(totalSeconds / 3600);
@@ -34,22 +27,15 @@ export function secondsToHHMMSS(totalSeconds) {
 
 /**
  * Converts HH, MM, SS to total seconds
- * @param {number} h 
- * @param {number} m 
- * @param {number} s 
- * @returns {number}
  */
-export function hmsToSeconds(h, m, s) {
-    return (parseInt(h) || 0) * 3600 + (parseInt(m) || 0) * 60 + (parseInt(s) || 0);
+export function hmsToSeconds(h: string | number, m: string | number, s: string | number): number {
+    return (parseInt(h as string) || 0) * 3600 + (parseInt(m as string) || 0) * 60 + (parseInt(s as string) || 0);
 }
 
 /**
  * Calculates pace in min/km or min/mile
- * @param {number} seconds 
- * @param {number} distance 
- * @returns {string}
  */
-export function calculatePace(seconds, distance) {
+export function calculatePace(seconds: number | null, distance: number): string {
     if (!seconds || !distance || distance <= 0) return "--:--";
     const paceSeconds = seconds / distance;
     const m = Math.floor(paceSeconds / 60);

@@ -1,6 +1,11 @@
 export const MILES_TO_KM = 1.609344;
 
-export function convertPaceToKm(minutes, seconds) {
+export interface Pace {
+  minutes: number;
+  seconds: number;
+}
+
+export function convertPaceToKm(minutes: number | string, seconds: number | string): Pace {
   const totalMinPerMile = (Number(minutes) || 0) + (Number(seconds) || 0) / 60;
   if (totalMinPerMile <= 0) return { minutes: 0, seconds: 0 };
 
@@ -17,7 +22,7 @@ export function convertPaceToKm(minutes, seconds) {
   return { minutes: resMin, seconds: resSec };
 }
 
-export function convertPaceToMiles(minutes, seconds) {
+export function convertPaceToMiles(minutes: number | string, seconds: number | string): Pace {
   const totalMinPerKm = (Number(minutes) || 0) + (Number(seconds) || 0) / 60;
   if (totalMinPerKm <= 0) return { minutes: 0, seconds: 0 };
 

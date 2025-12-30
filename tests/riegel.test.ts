@@ -4,14 +4,17 @@ import {
     secondsToHHMMSS,
     hmsToSeconds,
     calculatePace,
-} from "../src/scripts/riegel-calculator.js";
+} from "../src/scripts/riegel-calculator";
 
 describe("Riegel Calculator Logic", () => {
     it("calculates predicted time correctly (5k to 10k)", () => {
         // 5k (5 km) in 20:00 (1200s)
         // T2 = 1200 * (10 / 5)^1.06 = 1200 * 2^1.06 ≈ 1200 * 2.0849 ≈ 2501.9s (~41:42)
         const t2 = calculateRiegelTime(5, 1200, 10);
-        expect(t2).toBeCloseTo(2501.9, 1);
+        expect(t2).not.toBeNull();
+        if (t2 !== null) {
+            expect(t2).toBeCloseTo(2501.9, 1);
+        }
     });
 
     it("returns null for invalid inputs", () => {
