@@ -1,17 +1,11 @@
-import { describe, expect, it, afterEach } from "bun:test";
-import { render, cleanup, act } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "bun:test";
+import { render, cleanup } from "@testing-library/react";
 import { PaceCalculator } from "../src/components/calculators/PaceCalculator";
 import { convertPaceToKm, convertPaceToMiles } from "../src/scripts/pace-calculator";
 import React from "react";
-import { Window } from "happy-dom";
+import "./setup";
 
-const window = new Window();
-globalThis.window = window as any;
-globalThis.document = window.document as any;
-globalThis.navigator = window.navigator as any;
-globalThis.HTMLElement = window.HTMLElement as any;
-
-describe("pace calculator logic", () => {
+describe("Pace Calculator Logic", () => {
   it("converts min/mile to min/km correctly", () => {
     expect(convertPaceToKm(10, 0)).toEqual({ minutes: 6, seconds: 13 });
     expect(convertPaceToKm(6, 0)).toEqual({ minutes: 3, seconds: 44 });
@@ -29,7 +23,7 @@ describe("pace calculator logic", () => {
   });
 });
 
-describe("pace calculator UI", () => {
+describe("Pace Calculator UI", () => {
   afterEach(() => {
     cleanup();
   });

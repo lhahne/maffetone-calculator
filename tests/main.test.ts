@@ -1,14 +1,8 @@
-import { describe, expect, it, afterEach } from "bun:test";
+import { describe, it, expect, afterEach } from "bun:test";
 import { render, cleanup, act } from "@testing-library/react";
 import { MaffetoneCalculator } from "../src/components/calculators/MaffetoneCalculator";
 import React from "react";
-import { Window } from "happy-dom";
-
-const window = new Window();
-globalThis.window = window as any;
-globalThis.document = window.document as any;
-globalThis.navigator = window.navigator as any;
-globalThis.HTMLElement = window.HTMLElement as any;
+import "./setup";
 
 // Helper to properly set input values and trigger React's onChange
 function setInputValue(input: HTMLInputElement, value: string) {

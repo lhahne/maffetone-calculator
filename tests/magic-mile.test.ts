@@ -1,20 +1,13 @@
-import { describe, expect, it, afterEach } from "bun:test";
+import { describe, it, expect, afterEach } from "bun:test";
 import { render, cleanup, fireEvent, act } from "@testing-library/react";
 import { MagicMileCalculator } from "../src/components/calculators/MagicMileCalculator";
 import {
     calculateMagicMilePredictions,
     secondsToMMSS,
-    secondsToHHMMSS,
     msToSeconds
 } from "../src/scripts/magic-mile-calculator";
 import React from "react";
-import { Window } from "happy-dom";
-
-const window = new Window();
-globalThis.window = window as any;
-globalThis.document = window.document as any;
-globalThis.navigator = window.navigator as any;
-globalThis.HTMLElement = window.HTMLElement as any;
+import "./setup";
 
 describe("Magic Mile Calculator Logic", () => {
     it("calculates predictions correctly for 7:00 mile", () => {

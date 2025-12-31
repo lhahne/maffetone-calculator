@@ -1,14 +1,8 @@
-import { describe, it, expect, afterEach, beforeAll } from "bun:test";
-import { render, cleanup, fireEvent, screen } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "bun:test";
+import { render, cleanup, fireEvent } from "@testing-library/react";
 import { Navigation } from "../src/components/Navigation";
 import React from "react";
-import { Window } from "happy-dom";
-
-const window = new Window();
-globalThis.window = window as any;
-globalThis.document = window.document as any;
-globalThis.navigator = window.navigator as any;
-globalThis.HTMLElement = window.HTMLElement as any;
+import "./setup";
 
 describe("Navigation", () => {
   afterEach(() => {
@@ -30,7 +24,7 @@ describe("Navigation", () => {
   });
 
   it("should toggle menu when button is clicked", () => {
-    const { getByRole, container, getByText } = render(React.createElement(Navigation));
+    const { getByRole, container } = render(React.createElement(Navigation));
     const btn = getByRole("button", { name: /Toggle Menu/i });
 
     // Initially closed - menu should have -translate-x-full

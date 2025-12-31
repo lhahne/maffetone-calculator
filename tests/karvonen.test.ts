@@ -1,22 +1,15 @@
-import { describe, expect, it, afterEach } from "bun:test";
+import { describe, it, expect, afterEach } from "bun:test";
 import { render, cleanup, act } from "@testing-library/react";
 import { KarvonenCalculator } from "../src/components/calculators/KarvonenCalculator";
 import {
   calculateMaxHR,
   calculateKarvonenHR,
   calculateAllZones,
-  zones,
 } from "../src/scripts/karvonen-calculator";
 import React from "react";
-import { Window } from "happy-dom";
+import "./setup";
 
-const window = new Window();
-globalThis.window = window as any;
-globalThis.document = window.document as any;
-globalThis.navigator = window.navigator as any;
-globalThis.HTMLElement = window.HTMLElement as any;
-
-describe("karvonen calculator logic", () => {
+describe("Karvonen Calculator Logic", () => {
   describe("calculateMaxHR", () => {
     it("calculates max HR using 220 - age", () => {
       expect(calculateMaxHR(40)).toBe(180);
@@ -51,7 +44,7 @@ describe("karvonen calculator logic", () => {
   });
 });
 
-describe("karvonen calculator UI", () => {
+describe("Karvonen Calculator UI", () => {
   afterEach(() => {
     cleanup();
   });

@@ -1,4 +1,4 @@
-import { describe, expect, it, afterEach } from "bun:test";
+import { describe, it, expect, afterEach } from "bun:test";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 import { RiegelCalculator } from "../src/components/calculators/RiegelCalculator";
 import {
@@ -8,13 +8,7 @@ import {
     calculatePace,
 } from "../src/scripts/riegel-calculator";
 import React from "react";
-import { Window } from "happy-dom";
-
-const window = new Window();
-globalThis.window = window as any;
-globalThis.document = window.document as any;
-globalThis.navigator = window.navigator as any;
-globalThis.HTMLElement = window.HTMLElement as any;
+import "./setup";
 
 describe("Riegel Calculator Logic", () => {
     it("calculates predicted time correctly (5k to 10k)", () => {
@@ -56,7 +50,7 @@ describe("Riegel Calculator UI", () => {
     });
 
     it("predicts time and pace correctly", () => {
-        const { getByText, getByDisplayValue, container } = render(React.createElement(RiegelCalculator));
+        const { getByText, getByDisplayValue } = render(React.createElement(RiegelCalculator));
 
         // The component has default values: 10km in 45:00 -> 21.0975km
         // Let's check the result appears
@@ -83,7 +77,7 @@ describe("Riegel Calculator UI", () => {
     });
 
     it("handles presets correctly", () => {
-        const { getByText, getByDisplayValue, container } = render(React.createElement(RiegelCalculator));
+        const { getByDisplayValue, container } = render(React.createElement(RiegelCalculator));
 
         // Click the 5K preset button (there are two sets - one for input, one for target)
         const presetButtons = container.querySelectorAll('button');
