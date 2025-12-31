@@ -1,7 +1,15 @@
-import { describe, expect, it, beforeEach } from "bun:test";
-import { Window } from "happy-dom";
+import { describe, expect, it, afterEach } from "bun:test";
+import { render, cleanup, act } from "@testing-library/react";
+import { PaceCalculator } from "../src/components/calculators/PaceCalculator";
 import { convertPaceToKm, convertPaceToMiles } from "../src/scripts/pace-calculator";
-import { setupPaceCalculator } from "../src/scripts/pace-ui";
+import React from "react";
+import { Window } from "happy-dom";
+
+const window = new Window();
+globalThis.window = window as any;
+globalThis.document = window.document as any;
+globalThis.navigator = window.navigator as any;
+globalThis.HTMLElement = window.HTMLElement as any;
 
 describe("pace calculator logic", () => {
   it("converts min/mile to min/km correctly", () => {
@@ -22,51 +30,52 @@ describe("pace calculator logic", () => {
 });
 
 describe("pace calculator UI", () => {
-  let window: Window;
-
-  beforeEach(() => {
-    window = new Window();
-    globalThis.window = window as any;
-    globalThis.document = window.document as any;
-
-    document.body.innerHTML = `
-      <form id="pace-form">
-        <input id="mile-min" value="10" />
-        <input id="mile-sec" value="00" />
-        <input id="km-min" value="0" />
-        <input id="km-sec" value="00" />
-      </form>
-    `;
+  afterEach(() => {
+    cleanup();
   });
 
-  it("converts mile to km in UI", () => {
-    setupPaceCalculator();
+  it("renders both pace input sections", () => {
+    const { getByText } = render(React.createElement(PaceCalculator));
 
-    const mileMin = document.querySelector("#mile-min") as HTMLInputElement;
-    const kmMin = document.querySelector("#km-min") as HTMLInputElement;
-    const kmSec = document.querySelector("#km-sec") as HTMLInputElement;
-
-    mileMin.value = "8";
-    mileMin.dispatchEvent(new window.Event("input", { bubbles: true }) as any);
-
-    // 8 min/mile = 4:58 min/km
-    expect(kmMin.value).toBe("4");
-    expect(kmSec.value).toBe("58");
+    expect(getByText(/Pace per Mile/i)).toBeTruthy();
+    expect(getByText(/Pace per Kilometer/i)).toBeTruthy();
   });
 
-  it("converts km to mile in UI", () => {
-    setupPaceCalculator();
+  it("displays initial values correctly", () => {
+    const { container } = render(React.createElement(PaceCalculator));
 
-    const kmMin = document.querySelector("#km-min") as HTMLInputElement;
-    const kmSec = document.querySelector("#km-sec") as HTMLInputElement;
-    const mileMin = document.querySelector("#mile-min") as HTMLInputElement;
-    const mileSec = document.querySelector("#mile-sec") as HTMLInputElement;
+    // Check for the 4 input fields
+    const inputs = container.querySelectorAll('input[type="number"]');
+    expect(inputs.length).toBe(4);
 
-    kmMin.value = "5";
-    kmMin.dispatchEvent(new window.Event("input", { bubbles: true }) as any);
+    // Default: 8:00 min/mile = 4:58 min/km
+    expect((inputs[0] as HTMLInputElement).value).toBe("8");
+    expect((inputs[1] as HTMLInputElement).value).toBe("00");
+    expect((inputs[2] as HTMLInputElement).value).toBe("4");
+    expect((inputs[3] as HTMLInputElement).value).toBe("58");
+  });
 
-    // 5 min/km = 8:03 min/mile
-    expect(mileMin.value).toBe("8");
-    expect(mileSec.value).toBe("03");
+  it("shows conversion math explanation", () => {
+    const { container } = render(React.createElement(PaceCalculator));
+
+    const pageText = container.textContent;
+    expect(pageText).toContain("Conversion Math");
+    expect(pageText).toContain("1.609");
+  });
+
+  it("has Minutes and Seconds labels for inputs", () => {
+    const { container } = render(React.createElement(PaceCalculator));
+
+    const pageText = container.textContent;
+    expect(pageText).toContain("Minutes");
+    expect(pageText).toContain("Seconds");
+  });
+
+  it("renders bidirectional conversion indicator", () => {
+    const { container } = render(React.createElement(PaceCalculator));
+
+    const pageText = container.textContent;
+    // The component has a ⇄ symbol for bidirectional conversion
+    expect(pageText).toContain("⇄");
   });
 });

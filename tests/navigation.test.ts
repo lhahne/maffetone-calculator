@@ -1,87 +1,69 @@
-import { describe, it, expect, beforeEach, afterEach, beforeAll } from "bun:test";
+import { describe, it, expect, afterEach, beforeAll } from "bun:test";
+import { render, cleanup, fireEvent, screen } from "@testing-library/react";
+import { Navigation } from "../src/components/Navigation";
+import React from "react";
 import { Window } from "happy-dom";
-import { setupNav } from "../src/scripts/navigation-ui";
 
-const navHTML = `
-  <button id="nav-toggle">
-    <svg id="hamburger-icon"></svg>
-    <svg id="close-icon"></svg>
-  </button>
-  <div id="nav-menu" class="-translate-x-full">
-    <nav>
-      <a href="/">Home</a>
-    </nav>
-  </div>
-`;
+const window = new Window();
+globalThis.window = window as any;
+globalThis.document = window.document as any;
+globalThis.navigator = window.navigator as any;
+globalThis.HTMLElement = window.HTMLElement as any;
 
 describe("Navigation", () => {
-  beforeAll(() => {
-    const window = new Window();
-    globalThis.window = window as any;
-    globalThis.document = window.document as any;
-  });
-
-  beforeEach(() => {
-    document.body.innerHTML = "";
-  });
-
   afterEach(() => {
-    document.body.innerHTML = "";
+    cleanup();
+    document.body.style.overflow = "";
   });
 
   it("should add hamburger button to the DOM", () => {
-    document.body.innerHTML = navHTML;
-    setupNav();
-    const btn = document.getElementById("nav-toggle");
+    const { getByRole } = render(React.createElement(Navigation));
+    const btn = getByRole("button", { name: /Toggle Menu/i });
     expect(btn).toBeTruthy();
-    expect(btn?.tagName).toBe("BUTTON");
+    expect(btn.tagName).toBe("BUTTON");
   });
 
-  it("should add nav menu to the DOM", () => {
-    document.body.innerHTML = navHTML;
-    setupNav();
-    const menu = document.getElementById("nav-menu");
+  it("should have nav menu initially closed", () => {
+    const { container } = render(React.createElement(Navigation));
+    const menu = container.querySelector(".-translate-x-full");
     expect(menu).toBeTruthy();
-    expect(menu?.classList.contains("-translate-x-full")).toBe(true);
   });
 
   it("should toggle menu when button is clicked", () => {
-    document.body.innerHTML = navHTML;
-    setupNav();
-    const btn = document.getElementById("nav-toggle") as HTMLElement;
-    const menu = document.getElementById("nav-menu") as HTMLElement;
+    const { getByRole, container, getByText } = render(React.createElement(Navigation));
+    const btn = getByRole("button", { name: /Toggle Menu/i });
 
-    // Initially closed
-    expect(menu.classList.contains("-translate-x-full")).toBe(true);
-    expect(menu.classList.contains("translate-x-0")).toBe(false);
+    // Initially closed - menu should have -translate-x-full
+    let menu = container.querySelector(".-translate-x-full");
+    expect(menu).toBeTruthy();
 
     // Click to open
-    btn.click();
-    expect(menu.classList.contains("-translate-x-full")).toBe(false);
-    expect(menu.classList.contains("translate-x-0")).toBe(true);
+    fireEvent.click(btn);
+    menu = container.querySelector(".translate-x-0");
+    expect(menu).toBeTruthy();
     expect(document.body.style.overflow).toBe("hidden");
 
     // Click to close
-    btn.click();
-    expect(menu.classList.contains("-translate-x-full")).toBe(true);
-    expect(menu.classList.contains("translate-x-0")).toBe(false);
+    fireEvent.click(btn);
+    menu = container.querySelector(".-translate-x-full");
+    expect(menu).toBeTruthy();
     expect(document.body.style.overflow).toBe("");
   });
 
   it("should close menu when a link is clicked", () => {
-    document.body.innerHTML = navHTML;
-    setupNav();
-    const btn = document.getElementById("nav-toggle") as HTMLElement;
-    const menu = document.getElementById("nav-menu") as HTMLElement;
-    const link = menu.querySelector("a") as HTMLElement;
+    const { getByRole, container, getByText } = render(React.createElement(Navigation));
+    const btn = getByRole("button", { name: /Toggle Menu/i });
 
     // Open menu
-    btn.click();
-    expect(menu.classList.contains("translate-x-0")).toBe(true);
+    fireEvent.click(btn);
+    let menu = container.querySelector(".translate-x-0");
+    expect(menu).toBeTruthy();
 
     // Click link
-    link.click();
-    expect(menu.classList.contains("-translate-x-full")).toBe(true);
-    expect(menu.classList.contains("translate-x-0")).toBe(false);
+    const link = getByText("Maffetone Calculator");
+    fireEvent.click(link);
+
+    menu = container.querySelector(".-translate-x-full");
+    expect(menu).toBeTruthy();
   });
 });
