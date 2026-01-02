@@ -10,8 +10,16 @@ export const Navigation: React.FC = () => {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+            document.body.style.height = '100%';
         } else {
             document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.width = '';
+            document.body.style.height = '';
         }
     }, [isOpen]);
 
@@ -29,7 +37,8 @@ export const Navigation: React.FC = () => {
         <>
             <button
                 onClick={toggleMenu}
-                className="fixed top-6 left-6 z-50 p-2 text-white bg-slate-800 rounded-lg border border-white/10 hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-sky-400"
+                className="fixed z-[9999] p-2 text-white bg-slate-800 rounded-lg border border-white/10 hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-sky-400"
+                style={{ top: 'calc(1.5rem + env(safe-area-inset-top))', left: 'calc(1.5rem + env(safe-area-inset-left))' }}
                 aria-label="Toggle Menu"
             >
                 {!isOpen ? (
@@ -56,22 +65,44 @@ export const Navigation: React.FC = () => {
             </button>
 
             <div
-                className={`fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-sm transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
-                    } flex items-center justify-center md:justify-start md:pl-24`}
+                className={`fixed z-[9998] bg-slate-950 backdrop-blur-sm transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                    } overflow-hidden`}
+                style={{
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: '-webkit-fill-available',
+                    minHeight: '100vh',
+                    minHeight: '100dvh',
+                    width: '100vw',
+                    position: 'fixed',
+                    touchAction: 'none'
+                }}
                 onClick={() => setIsOpen(false)}
             >
-                <nav className="flex flex-col gap-8 text-center md:text-left" onClick={(e) => e.stopPropagation()}>
-                    {links.map((link) => (
-                        <a
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setIsOpen(false)}
-                            className="text-3xl font-semibold text-white hover:text-sky-400 transition"
-                        >
-                            {link.label}
-                        </a>
-                    ))}
-                </nav>
+                <div
+                    className="flex items-center justify-center md:justify-start md:pl-24 h-full w-full"
+                    style={{
+                        paddingTop: 'max(1.5rem, env(safe-area-inset-top))',
+                        paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))',
+                        paddingLeft: 'max(1.5rem, env(safe-area-inset-left))',
+                        paddingRight: 'max(1.5rem, env(safe-area-inset-right))'
+                    }}
+                >
+                    <nav className="flex flex-col gap-8 text-center md:text-left" onClick={(e) => e.stopPropagation()}>
+                        {links.map((link) => (
+                            <a
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setIsOpen(false)}
+                                className="text-3xl font-semibold text-white hover:text-sky-400 transition"
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                    </nav>
+                </div>
             </div>
         </>
     );
