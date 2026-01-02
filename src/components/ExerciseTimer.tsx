@@ -7,21 +7,22 @@ interface Exercise {
     isRest: boolean;
 }
 
-export const ExerciseTimer: React.FC = () => {
-    const exercises: Exercise[] = [
-        { name: 'Goblet Squats', duration: 40, isRest: false },
-        { name: 'Rest', duration: 20, isRest: true },
-        { name: 'Push-ups', duration: 40, isRest: false },
-        { name: 'Rest', duration: 20, isRest: true },
-        { name: 'Kettlebell Deadlifts', duration: 40, isRest: false },
-        { name: 'Rest', duration: 20, isRest: true },
-        { name: 'Dead Hang', duration: 40, isRest: false },
-        { name: 'Rest', duration: 20, isRest: true },
-        { name: 'Plank', duration: 40, isRest: false },
-        { name: 'Rest', duration: 20, isRest: true },
-    ];
+const exercises: Exercise[] = [
+    { name: 'Goblet Squats', duration: 40, isRest: false },
+    { name: 'Rest', duration: 20, isRest: true },
+    { name: 'Push-ups', duration: 40, isRest: false },
+    { name: 'Rest', duration: 20, isRest: true },
+    { name: 'Kettlebell Deadlifts', duration: 40, isRest: false },
+    { name: 'Rest', duration: 20, isRest: true },
+    { name: 'Dead Hang', duration: 40, isRest: false },
+    { name: 'Rest', duration: 20, isRest: true },
+    { name: 'Plank', duration: 40, isRest: false },
+    { name: 'Rest', duration: 20, isRest: true },
+];
 
-    const totalRounds = 2;
+const totalRounds = 2;
+
+export const ExerciseTimer: React.FC = () => {
 
     const [currentRound, setCurrentRound] = useState(1);
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -124,7 +125,7 @@ export const ExerciseTimer: React.FC = () => {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [isRunning, currentExerciseIndex, currentRound, isComplete, exercises]);
+    }, [isRunning, currentExerciseIndex, currentRound, isComplete]);
 
     const handleStart = () => {
         setIsRunning(true);
