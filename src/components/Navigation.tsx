@@ -29,7 +29,8 @@ export const Navigation: React.FC = () => {
         <>
             <button
                 onClick={toggleMenu}
-                className="fixed top-6 left-6 z-50 p-2 text-white bg-slate-800 rounded-lg border border-white/10 hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-sky-400"
+                className="fixed z-50 p-2 text-white bg-slate-800 rounded-lg border border-white/10 hover:bg-slate-700 transition focus:outline-none focus:ring-2 focus:ring-sky-400"
+                style={{ top: 'calc(1.5rem + env(safe-area-inset-top))', left: 'calc(1.5rem + env(safe-area-inset-left))' }}
                 aria-label="Toggle Menu"
             >
                 {!isOpen ? (
@@ -58,6 +59,14 @@ export const Navigation: React.FC = () => {
             <div
                 className={`fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-sm transition-transform duration-300 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
                     } flex items-center justify-center md:justify-start md:pl-24`}
+                style={{
+                    paddingTop: 'env(safe-area-inset-top)',
+                    paddingBottom: 'env(safe-area-inset-bottom)',
+                    paddingLeft: 'env(safe-area-inset-left)',
+                    paddingRight: 'env(safe-area-inset-right)',
+                    minHeight: '100vh',
+                    minHeight: '100dvh'
+                }}
                 onClick={() => setIsOpen(false)}
             >
                 <nav className="flex flex-col gap-8 text-center md:text-left" onClick={(e) => e.stopPropagation()}>
