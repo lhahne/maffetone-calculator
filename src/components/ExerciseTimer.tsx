@@ -333,7 +333,7 @@ export const ExerciseTimer: React.FC = () => {
                     <Card>
                         <h3 className="text-xl font-semibold text-white mb-3">Tips</h3>
                         <ul className="space-y-2 text-sm text-slate-300 list-disc list-inside">
-                            <li>Audio cues: 3 beeps for countdown, long beep for transitions</li>
+                            <li>Audio cues: beeps at 3, 2, 1 seconds for countdown, long beep for transitions</li>
                             <li>Focus on proper form over speed</li>
                             <li>Use challenging but manageable weights</li>
                             <li>Keep rest periods active (light movement)</li>
