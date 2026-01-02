@@ -28,17 +28,71 @@ export const ExerciseTimer: React.FC = () => {
     const [timeRemaining, setTimeRemaining] = useState(exercises[0].duration);
     const [isRunning, setIsRunning] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
+    const [audioEnabled, setAudioEnabled] = useState(true);
     const intervalRef = useRef<number | null>(null);
+    const audioContextRef = useRef<AudioContext | null>(null);
+
+    // Initialize audio context
+    useEffect(() => {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        return () => {
+            audioContextRef.current?.close();
+        };
+    }, []);
+
+    // Play beep sound
+    const playBeep = (frequency: number, duration: number) => {
+        if (!audioEnabled || !audioContextRef.current) return;
+
+        const context = audioContextRef.current;
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+
+        oscillator.frequency.value = frequency;
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(0.3, context.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration);
+
+        oscillator.start(context.currentTime);
+        oscillator.stop(context.currentTime + duration);
+    };
+
+    // Play countdown beep (short, higher pitch)
+    const playCountdownBeep = () => {
+        playBeep(800, 0.1);
+    };
+
+    // Play transition beep (longer, lower pitch)
+    const playTransitionBeep = () => {
+        playBeep(400, 0.3);
+    };
 
     const currentExercise = exercises[currentExerciseIndex];
     const nextExerciseIndex = currentExerciseIndex + 1;
     const nextExercise = nextExerciseIndex < exercises.length ? exercises[nextExerciseIndex] : null;
+
+    // Audio feedback for countdown and transitions
+    useEffect(() => {
+        if (isRunning && !isComplete) {
+            // Countdown beeps at 3, 2, 1
+            if (timeRemaining === 3 || timeRemaining === 2 || timeRemaining === 1) {
+                playCountdownBeep();
+            }
+        }
+    }, [timeRemaining, isRunning, isComplete]);
 
     useEffect(() => {
         if (isRunning && !isComplete) {
             intervalRef.current = window.setInterval(() => {
                 setTimeRemaining((prev) => {
                     if (prev <= 1) {
+                        // Play transition beep
+                        playTransitionBeep();
+
                         // Move to next exercise
                         const nextIndex = currentExerciseIndex + 1;
 
@@ -173,28 +227,56 @@ export const ExerciseTimer: React.FC = () => {
                         )}
 
                         {/* Controls */}
-                        <div className="flex gap-3 pt-4">
-                            {!isRunning && !isComplete && (
+                        <div className="space-y-3 pt-4">
+                            <div className="flex gap-3">
+                                {!isRunning && !isComplete && (
+                                    <button
+                                        onClick={handleStart}
+                                        className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-lg transition"
+                                    >
+                                        {currentRound === 1 && currentExerciseIndex === 0 && timeRemaining === exercises[0].duration ? 'Start' : 'Resume'}
+                                    </button>
+                                )}
+                                {isRunning && (
+                                    <button
+                                        onClick={handlePause}
+                                        className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition"
+                                    >
+                                        Pause
+                                    </button>
+                                )}
                                 <button
-                                    onClick={handleStart}
-                                    className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-lg transition"
+                                    onClick={handleReset}
+                                    className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-6 rounded-lg transition"
                                 >
-                                    {currentRound === 1 && currentExerciseIndex === 0 && timeRemaining === exercises[0].duration ? 'Start' : 'Resume'}
+                                    Reset
                                 </button>
-                            )}
-                            {isRunning && (
-                                <button
-                                    onClick={handlePause}
-                                    className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition"
-                                >
-                                    Pause
-                                </button>
-                            )}
+                            </div>
+
+                            {/* Audio Toggle */}
                             <button
-                                onClick={handleReset}
-                                className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-6 rounded-lg transition"
+                                onClick={() => setAudioEnabled(!audioEnabled)}
+                                className="w-full flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-medium py-2 px-4 rounded-lg transition border border-slate-700"
                             >
-                                Reset
+                                {audioEnabled ? (
+                                    <>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                                        </svg>
+                                        <span>Sound On</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                            <line x1="23" y1="9" x2="17" y2="15"></line>
+                                            <line x1="17" y1="9" x2="23" y2="15"></line>
+                                        </svg>
+                                        <span>Sound Off</span>
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
@@ -250,6 +332,7 @@ export const ExerciseTimer: React.FC = () => {
                     <Card>
                         <h3 className="text-xl font-semibold text-white mb-3">Tips</h3>
                         <ul className="space-y-2 text-sm text-slate-300 list-disc list-inside">
+                            <li>Audio cues: 3 beeps for countdown, long beep for transitions</li>
                             <li>Focus on proper form over speed</li>
                             <li>Use challenging but manageable weights</li>
                             <li>Keep rest periods active (light movement)</li>
