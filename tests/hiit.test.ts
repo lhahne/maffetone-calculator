@@ -117,8 +117,8 @@ describe("HIIT Calculator Logic", () => {
         const restIntervals = workout.intervals.filter(i => i.type === 'rest');
         
         if (workIntervals.length > 0 && restIntervals.length > 0) {
-          const avgWork = workIntervals.reduce((sum, i) => sum + i.duration, 0) / workIntervals.length;
-          const avgRest = restIntervals.reduce((sum, i) => sum + i.duration, 0) / restIntervals.length;
+          const avgWork = workIntervals.reduce((sum, i) => sum + i.duration, 0) / (workIntervals.length || 1);
+          const avgRest = restIntervals.reduce((sum, i) => sum + i.duration, 0) / (restIntervals.length || 1);
           
           // Check ratio is approximately 2:1
           const ratio = avgWork / avgRest;
