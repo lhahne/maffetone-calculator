@@ -201,78 +201,82 @@ export const HiitCalculator: React.FC = () => {
     );
 
     const resultsView = (
-        <Card variant="glass">
-            <p className="text-sm uppercase tracking-[0.3em] text-sky-300 mb-6">
-                Your HIIT Workout
-            </p>
+        <>
+            <Card variant="glass">
+                <p className="text-sm uppercase tracking-[0.3em] text-sky-300 mb-6">
+                    Your HIIT Workout
+                </p>
 
-            {workout ? (
-                <div className="space-y-6">
-                    {/* Workout Header */}
-                    <div className="space-y-2">
-                        <h3 className="text-2xl font-semibold text-white">{workout.name}</h3>
-                        <p className="text-sm text-slate-300">{workout.description}</p>
-                    </div>
+                {workout ? (
+                    <div className="space-y-6">
+                        {/* Workout Header */}
+                        <div className="space-y-2">
+                            <h3 className="text-2xl font-semibold text-white">{workout.name}</h3>
+                            <p className="text-sm text-slate-300">{workout.description}</p>
+                        </div>
 
-                    {/* Workout Stats */}
-                    <div className="grid grid-cols-2 gap-3">
-                        {(() => {
-                            const stats = getWorkoutStats(workout);
-                            return (
-                                <>
-                                    <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
-                                        <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
-                                            Total Time
-                                        </p>
-                                        <p className="text-lg font-semibold text-sky-300">
-                                            {Math.round(workout.totalDuration)} min
-                                        </p>
-                                    </div>
-                                    <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
-                                        <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
-                                            Intervals
-                                        </p>
-                                        <p className="text-lg font-semibold text-sky-300">
-                                            {stats.intervals}
-                                        </p>
-                                    </div>
-                                    <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
-                                        <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
-                                            Work Time
-                                        </p>
-                                        <p className="text-lg font-semibold text-sky-300">
-                                            {formatTime(stats.totalWork)}
-                                        </p>
-                                    </div>
-                                    <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
-                                        <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
-                                            Work:Rest
-                                        </p>
-                                        <p className="text-lg font-semibold text-sky-300">
-                                            {stats.ratio}
-                                        </p>
-                                    </div>
-                                </>
-                            );
-                        })()}
-                    </div>
-
-                    {/* Interval Timeline */}
-                    <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">
-                            Workout Timeline
-                        </h4>
-                        <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
-                            {intervalTimeline}
+                        {/* Workout Stats */}
+                        <div className="grid grid-cols-2 gap-3">
+                            {(() => {
+                                const stats = getWorkoutStats(workout);
+                                return (
+                                    <>
+                                        <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
+                                            <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
+                                                Total Time
+                                            </p>
+                                            <p className="text-lg font-semibold text-sky-300">
+                                                {Math.round(workout.totalDuration)} min
+                                            </p>
+                                        </div>
+                                        <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
+                                            <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
+                                                Intervals
+                                            </p>
+                                            <p className="text-lg font-semibold text-sky-300">
+                                                {stats.intervals}
+                                            </p>
+                                        </div>
+                                        <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
+                                            <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
+                                                Work Time
+                                            </p>
+                                            <p className="text-lg font-semibold text-sky-300">
+                                                {formatTime(stats.totalWork)}
+                                            </p>
+                                        </div>
+                                        <div className="rounded-xl border border-white/10 bg-slate-900/50 p-3">
+                                            <p className="text-xs text-slate-400 uppercase tracking-wide mb-1">
+                                                Work:Rest
+                                            </p>
+                                            <p className="text-lg font-semibold text-sky-300">
+                                                {stats.ratio}
+                                            </p>
+                                        </div>
+                                    </>
+                                );
+                            })()}
                         </div>
                     </div>
-                </div>
-            ) : (
-                <p className="text-sm text-slate-400 text-center py-10 border-2 border-dashed border-white/5 rounded-2xl">
-                    Select your goal and duration to generate a HIIT workout.
-                </p>
+                ) : (
+                    <p className="text-sm text-slate-400 text-center py-10 border-2 border-dashed border-white/5 rounded-2xl">
+                        Select your goal and duration to generate a HIIT workout.
+                    </p>
+                )}
+            </Card>
+
+            {/* Workout Timeline Card */}
+            {workout && (
+                <Card variant="glass">
+                    <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-4">
+                        Workout Timeline
+                    </h4>
+                    <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
+                        {intervalTimeline}
+                    </div>
+                </Card>
             )}
-        </Card>
+        </>
     );
 
     const info = workout ? (
