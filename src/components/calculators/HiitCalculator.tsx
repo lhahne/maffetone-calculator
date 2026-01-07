@@ -180,7 +180,7 @@ export const HiitCalculator: React.FC = () => {
                             <span className="text-xl flex-shrink-0">💪</span>
                             <div>
                                 <p className="text-white font-medium">
-                                    Repeat {workoutInstructions.numIntervals} times
+                                    Repeat {workoutInstructions.numIntervals} {workoutInstructions.numIntervals === 1 ? 'time' : 'times'}
                                 </p>
                                 <div className="mt-2 space-y-1.5">
                                     <p className="text-sm text-slate-300">
