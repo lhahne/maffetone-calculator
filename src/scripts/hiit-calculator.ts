@@ -211,7 +211,7 @@ export function getWorkoutStats(workout: HiitWorkout): {
   const totalWork = workIntervals.reduce((sum, i) => sum + i.duration, 0);
   const totalRest = restIntervals.reduce((sum, i) => sum + i.duration, 0);
 
-  const avgWork = totalWork / workIntervals.length;
+  const avgWork = totalWork / (workIntervals.length || 1);
   const avgRest = totalRest / (restIntervals.length || 1);
 
   const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
