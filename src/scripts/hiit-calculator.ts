@@ -116,7 +116,7 @@ export function generateHiitWorkout(params: HiitParameters): HiitWorkout | null 
     const [work, rest] = params.workRestRatio.split(':').map(Number);
     if (work > 0 && rest > 0) {
       // Calculate durations based on ratio and goal
-      const baseUnit = goal === 'power' ? 20 : goal === 'beginner' ? 20 : 30;
+      const baseUnit = goal === 'endurance' || goal === 'fat-burn' ? 30 : 20;
       workDuration = baseUnit * work;
       restDuration = baseUnit * rest;
     }
@@ -215,9 +215,22 @@ export function getWorkoutStats(workout: HiitWorkout): {
   const avgRest = totalRest / (restIntervals.length || 1);
 
   const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-  const divisor = gcd(Math.round(avgWork), Math.round(avgRest));
-  const workRatio = Math.round(avgWork) / divisor;
-  const restRatio = Math.round(avgRest) / divisor;
+  const roundedWork = Math.round(avgWork);
+  const roundedRest = Math.round(avgRest);
+  
+  // Handle edge cases where avgRest might be 0
+  let workRatio = 1;
+  let restRatio = 1;
+  
+  if (roundedWork > 0 && roundedRest > 0) {
+    const divisor = gcd(roundedWork, roundedRest);
+    workRatio = roundedWork / divisor;
+    restRatio = roundedRest / divisor;
+  } else if (roundedWork > 0) {
+    // Only work intervals exist
+    workRatio = 1;
+    restRatio = 0;
+  }
 
   return {
     totalWork: Math.round(totalWork),
