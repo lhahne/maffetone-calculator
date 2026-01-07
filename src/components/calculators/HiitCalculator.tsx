@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Radio } from '../ui/Radio';
@@ -35,6 +35,77 @@ export const HiitCalculator: React.FC = () => {
             setWorkout(null);
         }
     }, [goal, totalDuration, useCustomRatio, workRestRatio]);
+
+    // Memoize interval timeline rendering for performance
+    const intervalTimeline = useMemo(() => {
+        if (!workout) return null;
+
+        // Pre-compute interval counters to avoid O(n²) complexity
+        let workCount = 0;
+        let restCount = 0;
+
+        return workout.intervals.map((interval, idx) => {
+            if (interval.type === 'work') workCount++;
+            if (interval.type === 'rest') restCount++;
+
+            const intervalNumber = interval.type === 'work' ? workCount : interval.type === 'rest' ? restCount : 0;
+
+            const getIntervalStyle = () => {
+                switch (interval.type) {
+                    case 'warmup':
+                        return 'border-yellow-500/30 bg-yellow-900/20';
+                    case 'work':
+                        return 'border-sky-500/30 bg-sky-900/20';
+                    case 'rest':
+                        return 'border-slate-500/30 bg-slate-800/20';
+                    case 'cooldown':
+                        return 'border-blue-500/30 bg-blue-900/20';
+                    default:
+                        return 'border-white/10 bg-slate-900/50';
+                }
+            };
+
+            const getIntervalEmoji = () => {
+                switch (interval.type) {
+                    case 'warmup':
+                        return '🔥';
+                    case 'work':
+                        return '💪';
+                    case 'rest':
+                        return '😮‍💨';
+                    case 'cooldown':
+                        return '🧘';
+                    default:
+                        return '';
+                }
+            };
+
+            return (
+                <div
+                    key={idx}
+                    className={`rounded-lg border p-3 ${getIntervalStyle()}`}
+                >
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <span className="text-lg">{getIntervalEmoji()}</span>
+                            <span className="font-medium text-white capitalize">
+                                {interval.type}
+                                {intervalNumber > 0 ? ` ${intervalNumber}` : ''}
+                            </span>
+                        </div>
+                        <span className="font-semibold text-sky-300">
+                            {formatTime(interval.duration)}
+                        </span>
+                    </div>
+                    {interval.intensity && (
+                        <p className="text-xs text-slate-400 mt-1">
+                            {interval.intensity}
+                        </p>
+                    )}
+                </div>
+            );
+        });
+    }, [workout]);
 
     const form = (
         <Card variant="glass" className="space-y-8">
@@ -192,73 +263,7 @@ export const HiitCalculator: React.FC = () => {
                             Workout Timeline
                         </h4>
                         <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
-                            {(() => {
-                                // Pre-compute interval counters to avoid O(n²) complexity
-                                let workCount = 0;
-                                let restCount = 0;
-                                
-                                return workout.intervals.map((interval, idx) => {
-                                    if (interval.type === 'work') workCount++;
-                                    if (interval.type === 'rest') restCount++;
-                                    
-                                    const intervalNumber = interval.type === 'work' ? workCount : interval.type === 'rest' ? restCount : 0;
-                                    
-                                    const getIntervalStyle = () => {
-                                        switch (interval.type) {
-                                            case 'warmup':
-                                                return 'border-yellow-500/30 bg-yellow-900/20';
-                                            case 'work':
-                                                return 'border-sky-500/30 bg-sky-900/20';
-                                            case 'rest':
-                                                return 'border-slate-500/30 bg-slate-800/20';
-                                            case 'cooldown':
-                                                return 'border-blue-500/30 bg-blue-900/20';
-                                            default:
-                                                return 'border-white/10 bg-slate-900/50';
-                                        }
-                                    };
-
-                                    const getIntervalEmoji = () => {
-                                        switch (interval.type) {
-                                            case 'warmup':
-                                                return '🔥';
-                                            case 'work':
-                                                return '💪';
-                                            case 'rest':
-                                                return '😮‍💨';
-                                            case 'cooldown':
-                                                return '🧘';
-                                            default:
-                                                return '';
-                                        }
-                                    };
-
-                                    return (
-                                        <div
-                                            key={idx}
-                                            className={`rounded-lg border p-3 ${getIntervalStyle()}`}
-                                        >
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-lg">{getIntervalEmoji()}</span>
-                                                    <span className="font-medium text-white capitalize">
-                                                        {interval.type}
-                                                        {intervalNumber > 0 ? ` ${intervalNumber}` : ''}
-                                                    </span>
-                                                </div>
-                                                <span className="font-semibold text-sky-300">
-                                                    {formatTime(interval.duration)}
-                                                </span>
-                                            </div>
-                                            {interval.intensity && (
-                                                <p className="text-xs text-slate-400 mt-1">
-                                                    {interval.intensity}
-                                                </p>
-                                            )}
-                                        </div>
-                                    );
-                                });
-                            })()}
+                            {intervalTimeline}
                         </div>
                     </div>
                 </div>

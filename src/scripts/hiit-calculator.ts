@@ -214,7 +214,11 @@ export function getWorkoutStats(workout: HiitWorkout): {
   const avgWork = totalWork / (workIntervals.length || 1);
   const avgRest = totalRest / (restIntervals.length || 1);
 
-  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+  const gcd = (a: number, b: number): number => {
+    const absA = Math.abs(a);
+    const absB = Math.abs(b);
+    return absB === 0 ? absA : gcd(absB, absA % absB);
+  };
   const roundedWork = Math.round(avgWork);
   const roundedRest = Math.round(avgRest);
   
