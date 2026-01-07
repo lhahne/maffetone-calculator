@@ -22,6 +22,7 @@ export const Navigation: React.FC = () => {
         { href: '/magic-mile', label: 'Magic Mile Calculator' },
         { href: '/vdot', label: 'VDOT Calculator' },
         { href: '/karvonen', label: 'Karvonen Calculator' },
+        { href: '/hiit', label: 'HIIT Workout Generator' },
         { href: '/exercise', label: 'Strength Routine' },
     ];
 
