@@ -50,7 +50,7 @@ describe("Riegel Calculator UI", () => {
     });
 
     it("predicts time and pace correctly", () => {
-        const { getByText, getByDisplayValue } = render(React.createElement(RiegelCalculator));
+        const { getByDisplayValue, container } = render(React.createElement(RiegelCalculator));
 
         // The component has default values: 10km in 45:00 -> 21.0975km
         // Let's check the result appears
@@ -59,7 +59,8 @@ describe("Riegel Calculator UI", () => {
         expect(getByDisplayValue("45")).toBeTruthy();
 
         // Results should be visible with pace text
-        expect(getByText(/min\/km/i)).toBeTruthy();
+        const paceLabels = container.querySelectorAll(':where(*)');
+        expect(Array.from(paceLabels).some((el) => /min\/km/i.test(el.textContent || ""))).toBe(true);
     });
 
     it("updates when input changes", () => {
@@ -73,7 +74,8 @@ describe("Riegel Calculator UI", () => {
         fireEvent.change(minutesInput, { target: { value: "50" } });
 
         // The result should update - check that pace text is still present
-        expect(getByText(/min\/km/i)).toBeTruthy();
+        const paceLabels = container.querySelectorAll(':where(*)');
+        expect(Array.from(paceLabels).some((el) => /min\/km/i.test(el.textContent || ""))).toBe(true);
     });
 
     it("handles presets correctly", () => {
