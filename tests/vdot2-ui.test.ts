@@ -48,6 +48,17 @@ describe("VDOT2 UI", () => {
     expect(predictionsSection?.classList.contains("hidden")).toBe(false);
   });
 
+  it("orders training paces from slowest to fastest", () => {
+    setupVdot2Calculator();
+
+    const labels = Array.from(document.querySelectorAll("#training-paces-container span"))
+      .map((node) => node.textContent?.trim())
+      .filter(Boolean);
+
+    expect(labels[0]).toBe("Easy");
+    expect(labels[labels.length - 1]).toBe("Repetition");
+  });
+
   it("hides sections when inputs are cleared", () => {
     setupVdot2Calculator();
 

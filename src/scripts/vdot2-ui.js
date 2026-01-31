@@ -74,12 +74,13 @@ export function setupVdot2Calculator() {
       return;
     }
 
-    trainingPacesContainer.innerHTML = trainingZones
-      .map((zone) => {
-        const pace = paces[zone.id];
-        if (!pace) return "";
+    const sortedZones = trainingZones
+      .map((zone) => ({ zone, pace: paces[zone.id] }))
+      .filter(({ pace }) => Boolean(pace))
+      .sort((a, b) => (b.pace.maxPaceSeconds ?? 0) - (a.pace.maxPaceSeconds ?? 0));
 
-        return `
+    trainingPacesContainer.innerHTML = sortedZones
+      .map(({ pace }) => `
           <div class="flex justify-between items-center border-b border-white/10 pb-4 last:border-0">
             <div>
               <span class="text-lg font-semibold text-white">${pace.label}</span>
@@ -90,8 +91,7 @@ export function setupVdot2Calculator() {
               <div class="text-sm text-slate-400">min/${unit}</div>
             </div>
           </div>
-        `;
-      })
+        `)
       .join("");
 
     if (trainingPacesSection) trainingPacesSection.classList.remove("hidden");

@@ -85,6 +85,8 @@ export function calculateTrainingPaces(vdot, unit = "km") {
         description: zone.description,
         minPace: formatPace(minPace.min, minPace.sec),
         maxPace: formatPace(maxPace.min, maxPace.sec),
+        minPaceSeconds: minPace.totalSeconds,
+        maxPaceSeconds: maxPace.totalSeconds,
         minVelocity: maxVelocity,
         maxVelocity: minVelocity
       };
