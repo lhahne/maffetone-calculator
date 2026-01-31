@@ -7,15 +7,15 @@ import {
   secondsToMMSS,
   secondsToHHMMSS,
   hmsToSeconds
-} from "./vdot2-calculator.js";
+} from "./vdot-calculator.js";
 
-export function setupVdot2Calculator() {
+export function setupVdotCalculator() {
   const distanceSelect = document.getElementById("distance-select");
   const inputH = document.getElementById("input-h");
   const inputM = document.getElementById("input-m");
   const inputS = document.getElementById("input-s");
   const unitToggle = document.getElementById("unit-toggle");
-  const resultVdot = document.getElementById("result-vdot2");
+  const resultVdot = document.getElementById("result-vdot");
   const resultCard = document.getElementById("result-card");
   const trainingPacesContainer = document.getElementById("training-paces-container");
   const trainingPacesSection = document.getElementById("training-paces-section");

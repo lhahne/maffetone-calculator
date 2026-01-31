@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from "bun:test";
 import "./setup";
-import { setupVdot2Calculator } from "../src/scripts/vdot2-ui.js";
+import { setupVdotCalculator } from "../src/scripts/vdot-ui.js";
 
-function renderVdot2Fixture() {
+function renderVdotFixture() {
   document.body.innerHTML = `
     <div>
       <div id="distance-select">
@@ -17,7 +17,7 @@ function renderVdot2Fixture() {
       <button id="unit-toggle"><span id="unit-label">km</span></button>
 
       <div id="result-card" class="hidden">
-        <div id="result-vdot2">--</div>
+        <div id="result-vdot">--</div>
       </div>
 
       <section id="training-paces-section" class="hidden">
@@ -31,13 +31,13 @@ function renderVdot2Fixture() {
   `;
 }
 
-describe("VDOT2 UI", () => {
+describe("VDOT UI", () => {
   beforeEach(() => {
-    renderVdot2Fixture();
+    renderVdotFixture();
   });
 
   it("reveals training and prediction sections after computing", () => {
-    setupVdot2Calculator();
+    setupVdotCalculator();
 
     const resultCard = document.getElementById("result-card");
     const trainingSection = document.getElementById("training-paces-section");
@@ -49,7 +49,7 @@ describe("VDOT2 UI", () => {
   });
 
   it("orders training paces from slowest to fastest", () => {
-    setupVdot2Calculator();
+    setupVdotCalculator();
 
     const labels = Array.from(document.querySelectorAll("#training-paces-container span"))
       .map((node) => node.textContent?.trim())
@@ -60,7 +60,7 @@ describe("VDOT2 UI", () => {
   });
 
   it("hides sections when inputs are cleared", () => {
-    setupVdot2Calculator();
+    setupVdotCalculator();
 
     const minutesInput = document.getElementById("input-m") as HTMLInputElement;
     minutesInput.value = "0";

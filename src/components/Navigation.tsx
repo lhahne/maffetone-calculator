@@ -20,7 +20,7 @@ export const Navigation: React.FC = () => {
         { href: '/pace', label: 'Pace Calculator' },
         { href: '/riegel', label: 'Race Pace Estimator' },
         { href: '/magic-mile', label: 'Magic Mile Calculator' },
-        { href: '/vdot2', label: 'VDOT2 Calculator' },
+        { href: '/vdot', label: 'VDOT Calculator' },
         { href: '/karvonen', label: 'Karvonen Calculator' },
         { href: '/exercise', label: 'Strength Routine' },
     ];
