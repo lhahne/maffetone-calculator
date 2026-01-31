@@ -60,6 +60,16 @@ describe("Velocity to pace conversion", () => {
     expect(velocityToPace(0, "km")).toBeNull();
     expect(velocityToPace(-100, "km")).toBeNull();
   });
+
+  it("normalizes rounding to avoid :60 seconds", () => {
+    const metersPerKm = 1000;
+    const paceSeconds = 4 * 60 + 59.6;
+    const velocity = (metersPerKm * 60) / paceSeconds;
+    const pace = velocityToPace(velocity, "km");
+    expect(pace).not.toBeNull();
+    expect(pace.min).toBe(5);
+    expect(pace.sec).toBe(0);
+  });
 });
 
 describe("Training paces", () => {
@@ -118,12 +128,14 @@ describe("Utility functions", () => {
   it("converts seconds to MM:SS format", () => {
     expect(secondsToMMSS(330)).toBe("5:30");
     expect(secondsToMMSS(245)).toBe("4:05");
+    expect(secondsToMMSS(59.6)).toBe("1:00");
     expect(secondsToMMSS(null)).toBe("--:--");
   });
 
   it("converts seconds to HH:MM:SS format", () => {
     expect(secondsToHHMMSS(330)).toBe("5:30");
     expect(secondsToHHMMSS(3665)).toBe("1:01:05");
+    expect(secondsToHHMMSS(3599.6)).toBe("1:00:00");
     expect(secondsToHHMMSS(null)).toBe("--:--:--");
   });
 
