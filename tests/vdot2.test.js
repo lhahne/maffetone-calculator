@@ -9,7 +9,7 @@ import {
   secondsToMMSS,
   secondsToHHMMSS,
   hmsToSeconds
-} from "../src/scripts/vdot-calculator.js";
+} from "../src/scripts/vdot2-calculator.js";
 
 describe("VDOT calculator", () => {
   it("calculates VDOT from race performance", () => {

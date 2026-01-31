@@ -2,17 +2,17 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="VDOT Calculator | Jack Daniels Running Formula">
+<Layout title="VDOT2 Calculator | Jack Daniels Running Formula">
   <main class="mx-auto flex min-h-screen max-w-6xl flex-col gap-10 px-6 pb-14 pt-24">
     <header class="space-y-4">
       <p class="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">
         Jack Daniels' Method
       </p>
       <h1 class="text-4xl font-semibold leading-tight text-white md:text-5xl">
-        VDOT Calculator
+        VDOT2 Calculator
       </h1>
       <p class="max-w-2xl text-lg text-slate-300">
-        Enter a recent race performance to calculate your VDOT score and get personalized
+        Enter a recent race performance to calculate your VDOT2 score and get personalized
         training paces for Easy, Marathon, Threshold, Interval, and Repetition zones.
       </p>
     </header>
@@ -87,9 +87,9 @@ import Layout from '../layouts/Layout.astro';
         </div>
 
         <div class="rounded-3xl border border-white/10 bg-slate-900/60 p-6">
-          <h2 class="text-lg font-semibold text-white">About VDOT</h2>
+          <h2 class="text-lg font-semibold text-white">About VDOT2</h2>
           <p class="mt-3 text-sm text-slate-300 leading-relaxed">
-            VDOT (VO₂ DOT) is a pseudo-VO₂max value developed by Dr. Jack Daniels that
+            VDOT2 (VO₂ DOT) is a pseudo-VO₂max value developed by Dr. Jack Daniels that
             estimates your aerobic capacity based on race performance. It's used to
             determine optimal training paces and predict race times.
           </p>
@@ -100,8 +100,8 @@ import Layout from '../layouts/Layout.astro';
         <div
           id="result-card"
           class="hidden rounded-3xl border border-white/10 bg-white/10 p-8 shadow-xl backdrop-blur ring-1 ring-sky-400/30">
-          <p class="text-sm uppercase tracking-[0.3em] text-sky-300">Your VDOT Score</p>
-          <div id="result-vdot" class="mt-4 text-6xl font-bold text-white tracking-tight">--</div>
+          <p class="text-sm uppercase tracking-[0.3em] text-sky-300">Your VDOT2 Score</p>
+          <div id="result-vdot2" class="mt-4 text-6xl font-bold text-white tracking-tight">--</div>
         </div>
 
         <div
@@ -127,7 +127,7 @@ import Layout from '../layouts/Layout.astro';
                 href="https://vdoto2.com/calculator"
                 rel="noreferrer"
                 target="_blank">
-                VDOT Calculator by V.O2
+                VDOT2 Calculator by V.O2
               </a>
             </li>
             <li>
@@ -146,10 +146,10 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script>
-    import { setupVdotCalculator } from "../scripts/vdot-ui.js";
+    import { setupVdot2Calculator } from "../scripts/vdot2-ui.js";
 
-    setupVdotCalculator();
+    setupVdot2Calculator();
 
-    document.addEventListener('astro:after-swap', setupVdotCalculator);
+    document.addEventListener('astro:after-swap', setupVdot2Calculator);
   </script>
 </Layout>
